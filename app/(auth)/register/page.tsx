@@ -11,9 +11,7 @@ export default function Register() {
             <AcmeLogo />
           </div>
         </div>
-        <Suspense>
-          <LoginForm />
-        </Suspense>
+       
       </div>
     </main>
   );

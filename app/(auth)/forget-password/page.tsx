@@ -11,9 +11,7 @@ export default function ForgetPassword() {
             <AcmeLogo />
           </div>
         </div>
-        <Suspense>
-          <LoginForm />
-        </Suspense>
+      
       </div>
     </main>
   );
