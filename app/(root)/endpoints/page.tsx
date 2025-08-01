@@ -368,6 +368,95 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
       ]
     },
     {
+      category: 'Student Management',
+      icon: <Users className="w-5 h-5" />,
+      color: 'bg-indigo-500',
+      endpoints: [
+        {
+          id: 'students-get',
+          method: 'GET',
+          path: '/api/students',
+          description: 'Get all students with filtering',
+          params: 'year_group, target_grade, active',
+          example: '/api/students?year_group=10&active=true',
+          body: null
+        },
+        {
+          id: 'student-create',
+          method: 'POST',
+          path: '/api/students',
+          description: 'Create new student account',
+          params: null,
+          example: '/api/students',
+          body: {
+            name: 'Alice Johnson',
+            email: 'alice@email.com',
+            year_group: 11,
+            target_grade: 'A*',
+            exam_board: 'Edexcel',
+            parents_name: 'Sarah Johnson'
+          }
+        },
+        {
+          id: 'student-update',
+          method: 'PUT',
+          path: '/api/students/[id]',
+          description: 'Update student information',
+          params: null,
+          example: '/api/students/123',
+          body: {
+            target_grade: 'A*',
+            year_group: 12,
+            active: true
+          }
+        }
+      ]
+    },
+    {
+      category: 'Tutor Management',
+      icon: <BookOpen className="w-5 h-5" />,
+      color: 'bg-teal-500',
+      endpoints: [
+        {
+          id: 'tutors-get',
+          method: 'GET',
+          path: '/api/tutors',
+          description: 'Get all tutors with specializations',
+          params: 'subject, grade_level, available',
+          example: '/api/tutors?subject=mathematics&available=true',
+          body: null
+        },
+        {
+          id: 'tutor-create',
+          method: 'POST',
+          path: '/api/tutors',
+          description: 'Create new tutor account',
+          params: null,
+          example: '/api/tutors',
+          body: {
+            name: 'Dr. Smith',
+            email: 'smith@email.com',
+            specializations: ['Algebra', 'Calculus'],
+            hourly_rate: 35.00,
+            qualifications: 'PhD Mathematics'
+          }
+        },
+        {
+          id: 'tutor-update',
+          method: 'PUT',
+          path: '/api/tutors/[id]',
+          description: 'Update tutor profile and availability',
+          params: null,
+          example: '/api/tutors/456',
+          body: {
+            hourly_rate: 40.00,
+            available: true,
+            specializations: ['Advanced Calculus']
+          }
+        }
+      ]
+    },
+    {
       category: 'Admin Settings',
       icon: <Settings className="w-5 h-5" />,
       color: 'bg-gray-500',
@@ -401,6 +490,42 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
           description: 'Get admin reset operations log',
           params: 'admin_id, target_user_id',
           example: '/api/admin/reset-log',
+          body: null
+        },
+        {
+          id: 'admin-dashboard',
+          method: 'GET',
+          path: '/api/admindb',
+          description: 'Get admin dashboard with student list',
+          params: null,
+          example: '/api/admindb',
+          body: null
+        },
+        {
+          id: 'student-detail',
+          method: 'GET',
+          path: '/api/admindb/[studentid]',
+          description: 'Get individual student details',
+          params: null,
+          example: '/api/admindb/1',
+          body: null
+        },
+        {
+          id: 'tutor-dashboard',
+          method: 'GET',
+          path: '/api/tutordb',
+          description: 'Get tutor dashboard',
+          params: null,
+          example: '/api/tutordb',
+          body: null
+        },
+        {
+          id: 'student-dashboard',
+          method: 'GET',
+          path: '/api/studentdb',
+          description: 'Get student dashboard',
+          params: null,
+          example: '/api/studentdb',
           body: null
         }
       ]
