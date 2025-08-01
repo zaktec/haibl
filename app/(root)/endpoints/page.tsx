@@ -92,7 +92,7 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
     },
     {
       category: 'Error Handling',
-      icon: < Ban className="w-5 h-5" />,
+      icon: <Ban className="w-5 h-5" />,
       color: 'bg-blue-500',
       endpoints: [
         {
@@ -538,7 +538,17 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
     setTimeout(() => setCopiedEndpoint(''), 2000);
   };
 
-  const testEndpoint = async (endpoint: { id: string; method: string; path: string; description: string; params: string; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { name: string; email: string; password: string; role: string; year_group: number; target_grade: string; exam_board: string; parents_name: string; active?: undefined; }; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { name: string; email: string; role: string; active: boolean; password?: undefined; year_group?: undefined; target_grade?: undefined; exam_board?: undefined; parents_name?: undefined; }; } | { id: string; method: string; path: string; description: string; params: string; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { parent_id: number; type: string; name: string; description: string; code: string; grade_min: number; grade_max: number; published: boolean; }; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { name: string; description: string; published: boolean; parent_id?: undefined; type?: undefined; code?: undefined; grade_min?: undefined; grade_max?: undefined; }; } | { id: string; method: string; path: string; description: string; params: string; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { tutor_id: number; student_id: number; scheduled_start: string; scheduled_end: string; content_id: number; cost: number; status?: undefined; session_notes?: undefined; homework_set?: undefined; rating?: undefined; }; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { status: string; session_notes: string; homework_set: string; rating: number; tutor_id?: undefined; student_id?: undefined; scheduled_start?: undefined; scheduled_end?: undefined; content_id?: undefined; cost?: undefined; }; } | { id: string; method: string; path: string; description: string; params: string; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { user_id: number; content_id: number; completion: number; status: string; grade: number; strengths: string; areas_for_improvement: string; sessions_count: number; homework: string; next_lesson_plan: string; }; } | { id: string; method: string; path: string; description: string; params: string; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { text: string; type: string; correct_answer: string; options: string[]; grade_min: number; grade_max: number; user_id?: undefined; quiz_id?: undefined; score?: undefined; completed?: undefined; }; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { user_id: number; quiz_id: number; score: number; completed: boolean; text?: undefined; type?: undefined; correct_answer?: undefined; options?: undefined; grade_min?: undefined; grade_max?: undefined; }; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: null; } | { id: string; method: string; path: string; description: string; params: null; example: string; body: { platform_name: string; default_session_length: string; currency: string; }; } | { id: string; method: string; path: string; description: string; params: string; example: string; body: null; }, index: number) => {
+  type Endpoint = {
+    id: string;
+    method: string;
+    path: string;
+    description: string;
+    params: string | null;
+    example: string;
+    body: any;
+  };
+
+  const testEndpoint = async (endpoint: Endpoint, index: number) => {
     setIsLoading(true);
     setActiveEndpoint(`${endpoint.method}-${endpoint.path}-${index}`);
     
