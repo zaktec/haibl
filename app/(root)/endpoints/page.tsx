@@ -545,7 +545,7 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
     description: string;
     params: string | null;
     example: string;
-    body: any;
+    body: Record<string, unknown> | null;
   };
 
   const testEndpoint = async (endpoint: Endpoint, index: number) => {
