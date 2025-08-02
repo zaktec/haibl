@@ -1,19 +1,16 @@
-'use client';
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const navLinks = [
     { href: "/register", label: "Register" },
     { href: "/login", label: "Login" },
     { href: "/forget-password", label: "Forgot Password" },
-
 ];
+
 export default function AuthLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const pathname = usePathname();
     return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100 pt-16">
             <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
@@ -26,10 +23,7 @@ export default function AuthLayout({
                         <Link
                             key={href}
                             href={href}
-                            className={`text-sm transition-colors ${pathname === href
-                                    ? 'text-blue-800 font-semibold'
-                                    : 'text-blue-600 hover:text-blue-800'
-                                }`}
+                            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
                         >
                             {label}
                         </Link>
