@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 };
 
 
-export default function AboutUs() {
+export default function AboutPage() {
 
  
   return <p>About Us</p>;

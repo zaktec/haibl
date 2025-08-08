@@ -1,7 +1,7 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
-import Header from 'app/components/Header';
-import Footer from 'app/components/Footer';
+import Header from '@/app/ui/root/Header';
+import Footer from '@/app/ui/root/Footer';
 
 import { Metadata } from 'next';
 
