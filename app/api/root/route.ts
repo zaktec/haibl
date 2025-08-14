@@ -40,14 +40,38 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(body)) {
+      formData.append(key, value as string);
+    }
+
     await transporter.sendMail({
       from: process.env.MAIL_USER,
       to: process.env.MAIL_USER,
-      subject: `New message from ${validatedData.name}`,
-      text: `Name: ${validatedData.name}
+      subject: `Maths Tutor Interest Form - ${validatedData.name}`,
+      text: `MATHS TUTOR GROUP CLASS INTEREST FORM
+
+YOUR DETAILS:
+Learner Name: ${validatedData.name}
+Parent/Guardian: ${validatedData.subject}
+Year Group: ${validatedData.message}
+School: ${body.school || 'Not provided'}
+Phone: ${body.phone || 'Not provided'}
 Email: ${validatedData.email}
-Subject: ${validatedData.subject}
-Message: ${validatedData.message}`,
+
+CLASS PREFERENCE:
+${body.classPreference || 'Not selected'}
+
+INTERESTED IN HOMEWORK:
+${body.homework || 'Not selected'}
+
+GOALS:
+${body.goals || 'Not provided'}
+
+NOTES:
+${body.notes || 'Not provided'}
+
+Submitted: ${new Date().toLocaleString()}`,
     });
 
     console.log('Email sent successfully');
