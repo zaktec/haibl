@@ -33,14 +33,14 @@ function MailForm() {
     };
     return (
       <div className="max-w-md mx-auto mt-20 p-6 rounded-md bg-white shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Web From</h1>
+        <h1 className="text-2xl font-bold mb-4">Web Form</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
                 <input
                     type="text"
                     placeholder="Enter your name"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                    {...register("name", { required: "Name is required" })}
+                    {...register("name")}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -51,7 +51,7 @@ function MailForm() {
                     type="email"
                     placeholder="Enter your email"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                    {...register("email", { required: "Email is required", pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email address" } })}
+                    {...register("email")}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -62,7 +62,7 @@ function MailForm() {
                     type="text"
                     placeholder="Subject"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                    {...register("subject", { required: "Subject is required" })}
+                    {...register("subject")}
                 />
                 {errors.subject && (
                   <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
@@ -72,7 +72,7 @@ function MailForm() {
                 <textarea
                     placeholder="Your message"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                    {...register("message", { required: "Message is required" })}
+                    {...register("message")}
                     rows={4}
                 />
                 {errors.message && (
