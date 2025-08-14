@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       validatedData = mailFormSchema.parse(body);
     } catch (validationError: unknown) {
       return NextResponse.json(
-        { success: false, errorMessage: validationError.message },
+        { success: false, errorMessage: validationError instanceof Error ? validationError.message : 'Validation failed' },
         { status: 400 }
       );
     }
