@@ -112,7 +112,7 @@ function MailForm() {
                 
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Class Preference</h2>
-                    <p className="text-gray-600 mb-3">Please select which class you'd like to join:</p>
+                    <p className="text-gray-600 mb-3">Please select which class you&apos;d like to join:</p>
                     
                     <div className="space-y-2">
                         <label className="flex items-center">
