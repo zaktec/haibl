@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     let validatedData;
     try {
       validatedData = mailFormSchema.parse(body);
-    } catch (validationError: any) {
+    } catch (validationError: unknown) {
       return NextResponse.json(
         { success: false, errorMessage: validationError.message },
         { status: 400 }
