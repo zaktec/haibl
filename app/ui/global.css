@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide parent footers on onboarding page */
+.onboarding-page footer:not(.onboarding-footer) {
+  display: none;
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;

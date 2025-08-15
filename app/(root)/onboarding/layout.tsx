@@ -1,8 +1,4 @@
 import '@/app/ui/global.css';
-import { inter } from '@/app/ui/fonts';
-import Header from '@/app/ui/root/Headermth';
-import Footer from '@/app/ui/root/Footermth';
-
 import { Metadata } from 'next';
 import Headermth from '@/app/ui/root/Headermth';
 import Footermth from '@/app/ui/root/Footermth';
@@ -23,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-     <div className="pt-16">
+    <div className="onboarding-page pt-16">
       <div className="bg-gray-50 min-h-screen">
         <div className="bg-white border-b">
          
@@ -32,6 +28,9 @@ export default function RootLayout({
         <main className="max-w-7xl mx-auto px-4 py-6">
           <Headermth />
           {children}
+          <div className="onboarding-footer">
+            <Footermth />
+          </div>
         </main>
       </div>
     </div>

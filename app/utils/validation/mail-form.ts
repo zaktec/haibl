@@ -1,7 +1,18 @@
 import { z } from "zod";
+import { ERROR_MESSAGES } from "./errors";
 export const mailFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(1, "Subject is required"),
-  message: z.string().min(1, "Message is required"),
+  learnerName: z.string().min(1, ERROR_MESSAGES.LEARNER_NAME_REQUIRED),
+  parentName: z.string().min(1, ERROR_MESSAGES.PARENT_NAME_REQUIRED), 
+  yeargroup: z.string().min(1, ERROR_MESSAGES.YEAR_GROUP_REQUIRED),
+  school: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL).optional().or(z.literal('')),
+  classPreference: z.string().optional(),
+  homework: z.string().optional(),
+  travelArrangement: z.string().optional(),
+  bookingOption: z.string().optional(),
+  paymentPreference: z.string().optional(),
+  goals: z.string().optional(),
+  mathsSet: z.string().optional(),
+  notes: z.string().optional(),
 });

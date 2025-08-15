@@ -91,10 +91,30 @@ const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
       ]
     },
     {
-      category: 'Error Handling',
+      category: 'Form Management',
       icon: <Ban className="w-5 h-5" />,
-      color: 'bg-blue-500',
+      color: 'bg-emerald-500',
       endpoints: [
+        {
+          id: 'mail-form-post',
+          method: 'POST',
+          path: '/api/root',
+          description: 'Submit Maths Tutor Interest Form',
+          params: null,
+          example: '/api/root',
+          body: {
+            learnerName: 'John Smith',
+            parentName: 'Jane Smith',
+            yeargroup: 'Year 10',
+            school: 'Manchester High School',
+            phone: '07123456789',
+            email: 'jane.smith@email.com',
+            classPreference: 'higher',
+            homework: 'yes',
+            goals: 'Improve algebra skills',
+            notes: 'Struggles with quadratic equations'
+          }
+        },
         {
           id: 'error-get',
           method: 'GET',

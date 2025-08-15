@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { mailFormSchema } from '@/app/utils/validation/mail-form';
+import { ERROR_MESSAGES } from '@/app/utils/validation/errors';
 
 export async function POST(request: NextRequest) {
   console.log('API route called');
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
       validatedData = mailFormSchema.parse(body);
     } catch (validationError: unknown) {
       return NextResponse.json(
-        { success: false, errorMessage: validationError instanceof Error ? validationError.message : 'Validation failed' },
+        { success: false, errorMessage: validationError instanceof Error ? validationError.message : ERROR_MESSAGES.VALIDATION_FAILED },
         { status: 400 }
       );
     }
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
     if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
       console.log('Missing credentials:', { user: !!process.env.MAIL_USER, pass: !!process.env.MAIL_PASS });
       return NextResponse.json(
-        { success: false, errorMessage: 'Mail credentials not configured' },
+        { success: false, errorMessage: ERROR_MESSAGES.MAIL_CREDENTIALS_NOT_CONFIGURED },
         { status: 500 }
       );
     }
@@ -48,16 +49,16 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: process.env.MAIL_USER,
       to: process.env.MAIL_USER,
-      subject: `Maths Tutor Interest Form - ${validatedData.name}`,
-      text: `MATHS TUTOR GROUP CLASS INTEREST FORM
+      subject: `Maths Tutor Interest Form - ${validatedData.learnerName}`,
+      text: `MATHS TUTOR GROUP CLASS BOOKING FORM
 
 YOUR DETAILS:
-Learner Name: ${validatedData.name}
-Parent/Guardian: ${validatedData.subject}
-Year Group: ${validatedData.message}
+Learner Name: ${validatedData.learnerName}
+Parent/Guardian: ${validatedData.parentName}
+Year Group: ${validatedData.yeargroup}
 School: ${body.school || 'Not provided'}
 Phone: ${body.phone || 'Not provided'}
-Email: ${validatedData.email}
+Email: ${validatedData.email || 'Not provided'}
 
 CLASS PREFERENCE:
 ${body.classPreference || 'Not selected'}
@@ -65,8 +66,20 @@ ${body.classPreference || 'Not selected'}
 INTERESTED IN HOMEWORK:
 ${body.homework || 'Not selected'}
 
+TRAVEL ARRANGEMENTS:
+${body.travelArrangement || 'Not selected'}
+
+BOOKING OPTION:
+${body.bookingOption || 'Not selected'}
+
+PAYMENT PREFERENCE:
+${body.paymentPreference || 'Not selected'}
+
 GOALS:
 ${body.goals || 'Not provided'}
+
+MATHS SET:
+${body.mathsSet || 'Not provided'}
 
 NOTES:
 ${body.notes || 'Not provided'}
@@ -79,7 +92,7 @@ Submitted: ${new Date().toLocaleString()}`,
   } catch (error) {
     console.error('Email error:', error);
     return NextResponse.json(
-      { success: false, errorMessage: `Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}` },
+      { success: false, errorMessage: `${ERROR_MESSAGES.FAILED_TO_SEND_EMAIL}: ${error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR}` },
       { status: 500 }
     );
   }

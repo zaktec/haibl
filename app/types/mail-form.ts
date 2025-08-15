@@ -1,6 +1,16 @@
 export type FormData = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
+  learnerName: string;
+  parentName: string;
+  yeargroup: string;
+  school?: string;
+  phone?: string;
+  email?: string;
+  classPreference?: string;
+  homework?: string;
+  travelArrangement?: string;
+  bookingOption?: string;
+  paymentPreference?: string;
+  goals?: string;
+  mathsSet?: string;
+  notes?: string;
 }
