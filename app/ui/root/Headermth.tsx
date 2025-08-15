@@ -9,8 +9,7 @@ export default function Headermth() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const NAV_LINKS = [
-    { label: 'Home', href: 'mathstutorhelp.com' },
-  
+    { label: 'Home', href: 'https://mathstutorhelp.com' },
   ];
 
   // Close mobile menu on outside click
