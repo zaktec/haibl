@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 /* Hide parent footers on onboarding page */
-.onboarding-page footer:not(.onboarding-footer) {
-  display: none;
+body:has(.onboarding-page) > footer:not(.onboarding-footer) {
+  display: none !important;
 }
 
 input[type='number'] {

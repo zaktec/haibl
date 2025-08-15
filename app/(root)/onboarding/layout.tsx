@@ -19,20 +19,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="onboarding-page pt-16">
-      <div className="bg-gray-50 min-h-screen">
-        <div className="bg-white border-b">
-         
-        </div>
-        
-        <main className="max-w-7xl mx-auto px-4 py-6">
-          <Headermth />
-          {children}
-          <div className="onboarding-footer">
-            <Footermth />
-          </div>
-        </main>
+    <div className="onboarding-page pt-16 min-h-screen flex flex-col">
+      <div className="bg-white border-b">
+        <Headermth />
       </div>
+      
+      <main className="flex-1 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          {children}
+        </div>
+      </main>
+      
+      
+        <Footermth />
+     
     </div>
   );
 }

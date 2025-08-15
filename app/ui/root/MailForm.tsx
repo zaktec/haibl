@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast, { Toaster } from 'react-hot-toast';
 
 function MailForm() {
-    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
         resolver: zodResolver(mailFormSchema),
     });
 
@@ -138,18 +138,27 @@ function MailForm() {
                     <h2 className="text-xl font-semibold mb-4">Class Preference</h2>
                     <p className="text-gray-600 mb-3">Please select which class you&apos;d like to join:</p>
                     
-                    <div className="space-y-2">
-                        <label className="flex items-center">
-                            <input type="radio" {...register("classPreference")} value="foundation" className="mr-2" />
-                            <span>GCSE- Foundation – Sundays, 10:00 am – 11:00 am</span>
+                    <div className="space-y-3">
+                        <label className="flex items-start">
+                            <input type="radio" {...register("classPreference")} value="foundation" className="mr-3 mt-1" />
+                            <div>
+                                <span className="block">GCSE – Foundation – Sundays, 10:00 am – 11:00 am</span>
+                                <a href="https://mathstutorhelp.com/gcse-revision-class-foundation-manchester/" className="text-blue-500 text-sm hover:underline" target="_blank" rel="noopener noreferrer">More info</a>
+                            </div>
                         </label>
-                        <label className="flex items-center">
-                            <input type="radio" {...register("classPreference")} value="higher" className="mr-2" />
-                            <span>GCSE- Higher – Sundays, 11:00 am – 12:00 pm</span>
+                        <label className="flex items-start">
+                            <input type="radio" {...register("classPreference")} value="higher" className="mr-3 mt-1" />
+                            <div>
+                                <span className="block">GCSE – Higher – Sundays, 11:00 am – 12:00 pm</span>
+                                <a href="https://mathstutorhelp.com/gcse-revision-class-higher-manchester/" className="text-blue-500 text-sm hover:underline" target="_blank" rel="noopener noreferrer">More info</a>
+                            </div>
                         </label>
-                        <label className="flex items-center">
-                            <input type="radio" {...register("classPreference")} value="ks3" className="mr-2" />
-                            <span>KS3 – Sundays, 12:00 pm – 1:00 pm</span>
+                        <label className="flex items-start">
+                            <input type="radio" {...register("classPreference")} value="ks3" className="mr-3 mt-1" />
+                            <div>
+                                <span className="block">KS3 Maths – Sundays, 12:00 pm – 1:00 pm</span>
+                                <a href="https://mathstutorhelp.com/mathstutoringclub-manchester/" className="text-blue-500 text-sm hover:underline" target="_blank" rel="noopener noreferrer">More info</a>
+                            </div>
                         </label>
                     </div>
                 </div>
@@ -186,7 +195,7 @@ function MailForm() {
                 </div>
                 
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Booking Option</h2>
+                    <h2 className="text-xl font-semibold mb-4">Booking Option Preference</h2>
                     
                     <div className="space-y-2">
                         <label className="flex items-center">
@@ -215,6 +224,22 @@ function MailForm() {
                         <label className="flex items-center">
                             <input type="radio" {...register("paymentPreference")} value="card" className="mr-2" />
                             <span>Card Link</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Promotional Consent</h2>
+                    <p className="text-gray-600 mb-3">Do you mind if we take pictures for promotional purposes?</p>
+                    
+                    <div className="space-y-2">
+                        <label className="flex items-center">
+                            <input type="radio" {...register("promotionalConsent")} value="yes" className="mr-2" />
+                            <span>Yes</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" {...register("promotionalConsent")} value="no" className="mr-2" />
+                            <span>No</span>
                         </label>
                     </div>
                 </div>
@@ -254,6 +279,15 @@ function MailForm() {
                 
                 <div className="bg-blue-50 p-4 rounded-md">
                     <p className="text-sm text-blue-800">We will contact you closer to the start date with further details, including payment instructions and a diagnostic test. If you are no longer interested in the class, please let us know as soon as possible so we can offer the place to someone on the waiting list.</p>
+                </div>
+                
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Terms & Conditions</h2>
+                    <label className="flex items-start">
+                        <input type="checkbox" {...register("termsAccepted")} className="mr-2 mt-1" />
+                        <span className="text-sm">Please tick to confirm you have read and agree to the <a href="https://mathstutorhelp.com/terms-and-conditions/" className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">terms and conditions</a></span>
+                    </label>
+                    {errors.termsAccepted && <p className="text-red-500 text-sm mt-1">{errors.termsAccepted.message}</p>}
                 </div>
                 
                 <button

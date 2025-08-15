@@ -84,6 +84,12 @@ ${body.mathsSet || 'Not provided'}
 NOTES:
 ${body.notes || 'Not provided'}
 
+PROMOTIONAL CONSENT:
+${body.promotionalConsent || 'Not selected'}
+
+TERMS ACCEPTED:
+${body.termsAccepted ? 'Yes' : 'No'}
+
 Submitted: ${new Date().toLocaleString()}`,
     });
 

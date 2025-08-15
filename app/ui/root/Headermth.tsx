@@ -9,7 +9,7 @@ export default function Headermth() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const NAV_LINKS = [
-    { label: 'Home', href: '/' },
+    { label: 'Home', href: 'mathstutorhelp.com' },
   
   ];
 
@@ -52,11 +52,11 @@ export default function Headermth() {
 
   return (
     <>
-      <header className="bg-white shadow-sm border-b border-gray-200 fixed top-0 inset-x-0 z-50">
+      <header className="bg-blue-900 shadow-sm border-b border-blue-700 fixed top-0 inset-x-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="hover:opacity-80 transition-opacity">
-              <h1 className="text-2xl font-bold text-gray-900">MTH Interest Registration </h1>
+              <h1 className="text-2xl font-bold text-white">MTH Booking Form </h1>
             </Link>
 
             {/* Desktop Navigation */}
@@ -66,8 +66,8 @@ export default function Headermth() {
                   key={link.href}
                   href={link.href}
                   className={`transition-colors duration-200 ${pathname === link.href
-                      ? 'text-blue-600 font-semibold'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'text-blue-200 font-semibold'
+                      : 'text-white hover:text-blue-200'
                     }`}
                 >
                   {link.label}
@@ -81,7 +81,7 @@ export default function Headermth() {
                 aria-label={menuOpen ? "Close mobile menu" : "Open mobile menu"}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+                className="p-2 rounded-md text-white hover:text-blue-200 hover:bg-blue-800 transition-colors duration-200"
               >
                 <svg
                   className={`h-6 w-6 transition-transform duration-300 ${menuOpen ? 'rotate-90' : ''}`}

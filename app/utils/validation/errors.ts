@@ -12,5 +12,6 @@ export const ERROR_MESSAGES = {
   ZOD_INVALID_TYPE: "Invalid type provided",
   ZOD_TOO_SMALL: "Value is too small",
   ZOD_TOO_BIG: "Value is too big",
-  ZOD_INVALID_STRING: "Invalid string format"
+  ZOD_INVALID_STRING: "Invalid string format",
+  TERMS_REQUIRED: "You must accept the terms and conditions"
 } as const;
