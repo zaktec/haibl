@@ -6,6 +6,7 @@ export type FormData = {
   phone?: string;
   email?: string;
   classPreference?: string;
+  targetGrade?: string;
   homework?: string;
   travelArrangement?: string;
   bookingOption?: string;

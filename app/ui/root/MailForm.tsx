@@ -34,10 +34,11 @@ function MailForm() {
         <div className="max-w-3xl mx-auto mt-10 p-8 rounded-md bg-white shadow-md">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-4">Maths Tutor Help – Group Class Booking Form</h1>
-                <p className="text-gray-600 mb-6">Thank you for your interest in our Maths Revision Classes in Levenshulme, Manchester, starting on 26th October 2025.</p>
+                <p className="text-gray-600 mb-6 text-center">Thank you for your interest in our Maths Revision Classes in Levenshulme, Manchester, starting on 26th October 2025.
+Please give us your details and complete the form below so we can learn more about the learner and reserve a place.</p>
                 
-                <div className="bg-blue-50 p-6 rounded-lg mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Term Dates & Fees</h2>
+                <div className="bg-blue-50 p-6 rounded-lg mb-6 mx-auto">
+                    <h2 className="text-xl font-semibold mb-4 text-center">Term Dates & Fees</h2>
                     <p className="mb-4">Our classes run in three terms during the academic year:</p>
                     
                     <div className="mb-4">
@@ -166,6 +167,26 @@ function MailForm() {
                 </div>
                 
                 <div>
+                    <h2 className="text-xl font-semibold mb-4">Target Grade</h2>
+                    <select
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        {...register("targetGrade")}
+                    >
+                        <option value="">Select Target Grade</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                    {errors.targetGrade && <p className="text-red-500 text-sm mt-1">{errors.targetGrade.message}</p>}
+                </div>
+                
+                <div>
                     <h2 className="text-xl font-semibold mb-4">Interested in Homework?</h2>
                     
                     <div className="space-y-2">
@@ -261,7 +282,7 @@ function MailForm() {
                         
                         <div>
                             <textarea
-                                placeholder="What set is your child in for Maths? (e.g., Set 1, Set 2, etc.)"
+                                placeholder="What set is your child in for Maths? (e.g., Set 1, Set 2, etc.) What Exam Board are they following? (e.g., AQA, Edexcel, OCR)"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                                 rows={2}
                                 {...register("mathsSet")}

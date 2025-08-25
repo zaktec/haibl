@@ -8,6 +8,7 @@ export const mailFormSchema = z.object({
   phone: z.string().min(1, "Phone number is required"),
   email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL).optional().or(z.literal('')),
   classPreference: z.string().min(1, "Please select a class preference"),
+  targetGrade: z.string().optional(),
   homework: z.string().optional(),
   travelArrangement: z.string().optional(),
   bookingOption: z.string().optional(),
