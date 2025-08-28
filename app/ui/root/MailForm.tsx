@@ -268,6 +268,36 @@ Please give us your details and complete the form below so we can learn more abo
                 </div>
                 
                 <div>
+                    <h2 className="text-xl font-semibold mb-4">Preferred Communication Method</h2>
+                    <p className="text-gray-600 mb-3">How would you like to receive reports and updates?</p>
+                    
+                    <div className="space-y-2">
+                        <label className="flex items-center">
+                            <input type="radio" {...register("communicationMethod")} value="email" className="mr-2" />
+                            <span>Email 📧</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" {...register("communicationMethod")} value="whatsapp" className="mr-2" />
+                            <span>WhatsApp 💬</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" {...register("communicationMethod")} value="text" className="mr-2" />
+                            <span>Text Message 📱</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" {...register("communicationMethod")} value="other" className="mr-2" />
+                            <span>Other (please specify):</span>
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Please specify other communication method"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 ml-6"
+                            {...register("communicationOther")}
+                        />
+                    </div>
+                </div>
+                
+                <div>
                     <h2 className="text-xl font-semibold mb-4">Goals & Notes (optional)</h2>
                     
                     <div className="space-y-4">

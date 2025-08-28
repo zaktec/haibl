@@ -15,5 +15,7 @@ export type FormData = {
   mathsSet?: string;
   notes?: string;
   promotionalConsent?: string;
+  communicationMethod?: string;
+  communicationOther?: string;
   termsAccepted?: boolean;
 }

@@ -92,6 +92,9 @@ ${body.notes || 'Not provided'}
 PROMOTIONAL CONSENT:
 ${body.promotionalConsent || 'Not selected'}
 
+COMMUNICATION METHOD:
+${body.communicationMethod || 'Not selected'}${body.communicationOther ? ` - ${body.communicationOther}` : ''}
+
 TERMS ACCEPTED:
 ${body.termsAccepted ? 'Yes' : 'No'}
 

@@ -17,5 +17,7 @@ export const mailFormSchema = z.object({
   mathsSet: z.string().optional(),
   notes: z.string().optional(),
   promotionalConsent: z.string().optional(),
+  communicationMethod: z.string().optional(),
+  communicationOther: z.string().optional(),
   termsAccepted: z.boolean().refine(val => val === true, { message: "You must accept the terms and conditions" }),
 });
