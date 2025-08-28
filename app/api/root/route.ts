@@ -65,6 +65,9 @@ Email: ${validatedData.email || 'Not provided'}
 CLASS PREFERENCE:
 ${body.classPreference || 'Not selected'}
 
+TARGET GRADE:
+${body.targetGrade || 'Not selected'}
+
 INTERESTED IN HOMEWORK:
 ${body.homework || 'Not selected'}
 
