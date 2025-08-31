@@ -198,6 +198,23 @@ Please give us your details and complete the form below so we can learn more abo
                 </div>
                 
                 <div>
+                    <h2 className="text-xl font-semibold mb-4">Exam Board</h2>
+                    <p className="text-gray-600 mb-3">What exam board is the learner following?</p>
+                    <select
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        {...register("examBoard")}
+                    >
+                        <option value="">Select Exam Board</option>
+                        <option value="AQA">AQA</option>
+                        <option value="Edexcel">Edexcel</option>
+                        <option value="OCR">OCR</option>
+                        <option value="WJEC">WJEC</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    {errors.examBoard && <p className="text-red-500 text-sm mt-1">{errors.examBoard.message}</p>}
+                </div>
+                
+                <div>
                     <h2 className="text-xl font-semibold mb-4">Interested in Homework?</h2>
                     
                     <div className="space-y-2">
@@ -323,7 +340,7 @@ Please give us your details and complete the form below so we can learn more abo
                         
                         <div>
                             <textarea
-                                placeholder="What set is your child in for Maths? (e.g., Set 1, Set 2, etc.) What Exam Board are they following? (e.g., AQA, Edexcel, OCR)"
+                                placeholder="What set is your child in for Maths? (e.g., Set 1, Set 2, etc.)"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                                 rows={2}
                                 {...register("mathsSet")}

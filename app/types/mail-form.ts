@@ -8,6 +8,7 @@ export type FormData = {
   email?: string;
   classPreference?: string;
   targetGrade?: string;
+  examBoard?: string;
   homework?: string;
   travelArrangement?: string;
   bookingOption?: string;
