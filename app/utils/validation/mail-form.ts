@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { ERROR_MESSAGES } from "./errors";
 export const mailFormSchema = z.object({
-  learnerName: z.string().min(1, ERROR_MESSAGES.LEARNER_NAME_REQUIRED),
+  learnerFirstName: z.string().min(1, "Learner first name is required"),
+  learnerLastName: z.string().min(1, "Learner last name is required"),
   parentName: z.string().min(1, ERROR_MESSAGES.PARENT_NAME_REQUIRED), 
   yeargroup: z.string().min(1, ERROR_MESSAGES.YEAR_GROUP_REQUIRED),
   school: z.string().optional(),

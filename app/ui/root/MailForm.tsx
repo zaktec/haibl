@@ -66,14 +66,25 @@ Please give us your details and complete the form below so we can learn more abo
                     <h2 className="text-xl font-semibold mb-4">Your Details</h2>
                     
                     <div className="space-y-4">
-                        <div>
-                            <input
-                                type="text"
-                                placeholder="Full Name of Learner"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                                {...register("learnerName")}
-                            />
-                            {errors.learnerName && <p className="text-red-500 text-sm mt-1">{errors.learnerName.message}</p>}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Learner First Name"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                                    {...register("learnerFirstName")}
+                                />
+                                {errors.learnerFirstName && <p className="text-red-500 text-sm mt-1">{errors.learnerFirstName.message}</p>}
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Learner Last Name"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                                    {...register("learnerLastName")}
+                                />
+                                {errors.learnerLastName && <p className="text-red-500 text-sm mt-1">{errors.learnerLastName.message}</p>}
+                            </div>
                         </div>
                         
                         <div>

@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   },
 };
 export default function OnboardingPage() {
-    return (
-        <main className="flex min-h-screen items-center justify-center">
-            <MailForm />
-        </main>
-    );
+  return (
+    <main className="flex min-h-screen items-center justify-center">
+      <MailForm />
+    </main>
+  );
 }

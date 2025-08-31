@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: process.env.MAIL_USER,
       to: process.env.MAIL_USER,
-      subject: `Maths Tutor Interest Form - ${validatedData.learnerName}`,
+      subject: `Maths Tutor Interest Form - ${validatedData.learnerFirstName} ${validatedData.learnerLastName}`,
       text: `MATHS TUTOR GROUP CLASS BOOKING FORM
 
 YOUR DETAILS:
-Learner Name: ${validatedData.learnerName}
+Learner Name: ${validatedData.learnerFirstName} ${validatedData.learnerLastName}
 Parent/Guardian: ${validatedData.parentName}
 Year Group: ${validatedData.yeargroup}
 School: ${body.school || 'Not provided'}

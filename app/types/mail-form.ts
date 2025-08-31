@@ -1,5 +1,6 @@
 export type FormData = {
-  learnerName: string;
+  learnerFirstName: string;
+  learnerLastName: string;
   parentName: string;
   yeargroup: string;
   school?: string;
