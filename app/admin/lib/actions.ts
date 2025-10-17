@@ -17,7 +17,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getDb } from '@/app/seed/db.js';
+import { getDb } from '@/app/seed/db';
 
 const sql = getDb();
 

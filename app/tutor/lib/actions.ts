@@ -1,4 +1,4 @@
-import { getDb } from '../../seed/db.js';
+import { getDb } from '../../seed/db';
 
 const sql = getDb();
 
