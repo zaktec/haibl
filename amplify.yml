@@ -3,16 +3,17 @@ frontend:
   phases:
     preBuild:
       commands:
-        - cd $CODEBUILD_SRC_DIR
+        - cd $CODEBUILD_SRC_DIR/haibl
         - npm install
     build:
       commands:
+        - cd $CODEBUILD_SRC_DIR/haibl
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: haibl/.next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
-      - .next/cache/**/*
+      - haibl/node_modules/**/*
+      - haibl/.next/cache/**/*

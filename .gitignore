@@ -34,8 +34,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# cleanup files to remove
-nextjs-dashboard/
-DELETE_THESE_FILES.txt
-app/seed/db.js
