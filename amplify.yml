@@ -3,15 +3,17 @@ frontend:
   phases:
     preBuild:
       commands:
+        - cd nextjs-dashboard
         - npm install
     build:
       commands:
+        - cd nextjs-dashboard
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: nextjs-dashboard/.next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
-      - .next/cache/**/*
+      - nextjs-dashboard/node_modules/**/*
+      - nextjs-dashboard/.next/cache/**/*
