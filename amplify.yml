@@ -3,6 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
+        - cd $CODEBUILD_SRC_DIR
         - npm install
     build:
       commands:
