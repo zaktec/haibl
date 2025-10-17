@@ -1,7 +1,3 @@
-/**
- * Database Seeding Route - Fixed Version
- */
-
 import { getDb } from './db.js';
 import { seedUsers } from './users.js';
 import { seedContent } from './content.js';
