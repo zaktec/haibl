@@ -34,3 +34,26 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# cleanup files
+clear-cache.js
+clear-next.bat
+content_seed.sql
+content_seed.ts
+create-seed-dir.bat
+seed-database.html
+seed-runner.js
+seed.bat
+temp-delete.txt
+next.config.ts
+pnpm-lock.yaml
+
+# duplicate/unused database files
+app/seed/db-aws.js
+app/seed/db-dynamodb.js
+app/seed/db-sqlite.js
+app/seed/route-new.ts
+
+# unused UI files
+app/ui/dashboard.js
+app/ui/home.module.css
