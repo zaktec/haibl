@@ -1,5 +1,5 @@
 /**
- * Database Seeding Route
+ * Database Seeding Route - Fixed Version
  */
 
 import { getDb } from './db.js';
