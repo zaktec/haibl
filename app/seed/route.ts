@@ -1,55 +1,5 @@
 /**
  * Database Seeding Route
- * 
- * This file handles database initialization and seeding for the math tutoring platform.
- * It creates the complete database schema and populates it with sample data for development.
- */
-
-import { getDb } from './db';
-import { seedUsers } from './users';
-import { seedContent } from './content';
-import { seedQuestions } from './questions';
-import { seedQuizzes } from './quizzes';
-import { seedQuizQuestions } from './quiz-questions';
-import { seedBookings } from './bookings';
-import { seedUserProgress } from './user-progress';
-
-export const dynamic = 'force-dynamic';
-
-async function dropAndRecreateSchema(sql: any) {
-  await sql`DROP SCHEMA IF EXISTS public CASCADE`;
-  await sql`CREATE SCHEMA public`;
-  
-  await sql`
-CREATE TABLE users (
-  id BIGSERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,/**
- * Database Seeding Route
- * 
- * This file handles database initialization and seeding for the math tutoring platform.
- * It creates the complete database schema and populates it with sample data for development.
- */
-
-import { getDb } from './db.js';
-import { seedUsers } from './users.js';
-import { seedContent } from './content.js';
-import { seedQuestions } from './questions.js';
-import { seedQuizzes } from './quizzes.js';
-import { seedQuizQuestions } from './quiz-questions.js';
-import { seedBookings } from './bookings.js';
-import { seedUserProgress } from './user-progress.js';
-
-export const dynamic = 'force-dynamic';
-
-async function dropAndRecreateSchema(sql: any) {
-  await sql`DROP SCHEMA IF EXISTS public CASCADE`;
-  await sql`CREATE SCHEMA public`;
-  
-  await sql`
-CREATE TABLE users (
-  id BIGSERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,/**
- * Database Seeding Route
  */
 
 import { getDb } from './db.js';
@@ -107,8 +57,7 @@ CREATE TABLE content (
   author_id INTEGER NOT NULL DEFAULT 1 REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-  `;
+)`;
 
   await sql`
 CREATE TABLE questions (
@@ -130,8 +79,7 @@ CREATE TABLE questions (
   attachment_url TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-  `;
+)`;
 
   await sql`
 CREATE TABLE quizzes (
@@ -149,8 +97,7 @@ CREATE TABLE quizzes (
   attachment_url TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-  `;
+)`;
 
   await sql`
 CREATE TABLE quiz_questions (
@@ -160,10 +107,8 @@ CREATE TABLE quiz_questions (
   points_override INTEGER,
   PRIMARY KEY (quiz_id, question_id),
   UNIQUE (quiz_id, order_num)
-);
-  `;
+)`;
 
-    
   await sql`
 CREATE TABLE bookings (
   id BIGSERIAL PRIMARY KEY,
@@ -212,8 +157,7 @@ CREATE TABLE user_progress (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (user_id, content_id)
-);
-  `;
+)`;
 
   await sql`
 CREATE TABLE user_session_progress (
@@ -234,14 +178,9 @@ CREATE TABLE user_session_progress (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (user_progress_id, session_number)
-);
-  `;
+)`;
 }
 
-/**
- * Seeds the database with sample data for development and testing
- * Creates users, content, questions, quizzes, bookings, and progress records
- */
 async function seedData(sql: any) {
   const { adminUsers, tutorUsers, studentUsers } = await seedUsers(sql);
   const content = await seedContent(sql, adminUsers);
@@ -263,10 +202,6 @@ async function seedData(sql: any) {
   };
 }
 
-/**
- * GET handler - serves a web interface for database seeding
- * Provides buttons to seed database and navigate to login
- */
 export async function GET() {
   return new Response(`
     <!DOCTYPE html>
@@ -308,11 +243,6 @@ export async function GET() {
   });
 }
 
-/**
- * POST handler - executes database seeding
- * Drops existing schema, recreates tables, and populates with sample data
- * Disabled in production for security
- */
 export async function POST() {
   const startTime = Date.now();
   
