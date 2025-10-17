@@ -1,19 +1,4 @@
-import '@/app/ui/global.css';
-import { inter } from '@/app/ui/fonts';
-import Header from '@/app/ui/root/Header';
-import Footer from '@/app/ui/root/Footer';
-
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s | HaiBL | Next.js Learn Dashboard',
-    default: 'HaiBL | Next.js Learn Dashboard',
-  },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
-  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
-};
-
+import './ui/global.css';
 
 export default function RootLayout({
   children,
@@ -22,12 +7,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <Header />
+      <body className="antialiased">
         {children}
-        <Footer />
-
-
       </body>
     </html>
   );
