@@ -23,6 +23,53 @@ async function dropAndRecreateSchema(sql: any) {
   await sql`
 CREATE TABLE users (
   id BIGSERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,/**
+ * Database Seeding Route
+ * 
+ * This file handles database initialization and seeding for the math tutoring platform.
+ * It creates the complete database schema and populates it with sample data for development.
+ */
+
+import { getDb } from './db.js';
+import { seedUsers } from './users.js';
+import { seedContent } from './content.js';
+import { seedQuestions } from './questions.js';
+import { seedQuizzes } from './quizzes.js';
+import { seedQuizQuestions } from './quiz-questions.js';
+import { seedBookings } from './bookings.js';
+import { seedUserProgress } from './user-progress.js';
+
+export const dynamic = 'force-dynamic';
+
+async function dropAndRecreateSchema(sql: any) {
+  await sql`DROP SCHEMA IF EXISTS public CASCADE`;
+  await sql`CREATE SCHEMA public`;
+  
+  await sql`
+CREATE TABLE users (
+  id BIGSERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,/**
+ * Database Seeding Route
+ */
+
+import { getDb } from './db.js';
+import { seedUsers } from './users.js';
+import { seedContent } from './content.js';
+import { seedQuestions } from './questions.js';
+import { seedQuizzes } from './quizzes.js';
+import { seedQuizQuestions } from './quiz-questions.js';
+import { seedBookings } from './bookings.js';
+import { seedUserProgress } from './user-progress.js';
+
+export const dynamic = 'force-dynamic';
+
+async function dropAndRecreateSchema(sql: any) {
+  await sql`DROP SCHEMA IF EXISTS public CASCADE`;
+  await sql`CREATE SCHEMA public`;
+  
+  await sql`
+CREATE TABLE users (
+  id BIGSERIAL PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
