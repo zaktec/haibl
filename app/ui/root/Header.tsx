@@ -9,13 +9,8 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const NAV_LINKS = [
-    { label: 'Home', href: '/' },
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Settings', href: '/settings' },
-    { label: 'Endpoints', href: '/endpoints' },
-    { label: 'AdminDB', href: '/api/admindb' },
-    { label: 'TutorDB', href: '/api/tutordb' },
-    { label: 'StudentDB', href: '/api/studentdb' },
+    { label: 'Homepage', href: '/' },
+    { label: 'Contact Us', href: '/contact' },
   ];
 
   // Close mobile menu on outside click
