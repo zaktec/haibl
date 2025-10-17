@@ -19,7 +19,7 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcrypt';
-import { getDb } from '@/app/seed/db.js';
+// import { getDb } from '@/app/seed/db.js';
 
 // ===================================================================
 // DATABASE CONNECTION
@@ -28,7 +28,17 @@ import { getDb } from '@/app/seed/db.js';
 /**
  * Get database connection using the same singleton as admin
  */
-const sql = getDb();
+// const sql = getDb();
+
+export async function authenticate(_: string | undefined, formData: FormData) {
+  return 'Database not configured yet';
+}
+
+export async function register(_: string | undefined, formData: FormData) {
+  return 'Database not configured yet';
+}
+
+/*
 
 // ===================================================================
 // FORM DATA EXTRACTION HELPERS
@@ -290,6 +300,7 @@ export async function register(_: string | undefined, formData: FormData) {
 
     // Hash password with salt rounds (10 is a good balance of security vs performance)
     const saltRounds = 12;
+*/
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insert new user into database
