@@ -19,7 +19,15 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getDb } from '@/app/seed/db';
 
-const sql = getDb();
+// Initialize database connection only when needed
+function getSql() {
+  try {
+    return getDb();
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    return null;
+  }
+}
 
 // =============================================================================
 // FORM DATA EXTRACTION HELPERS
@@ -172,10 +180,8 @@ function getOptionalIntegerField(formData: FormData, key: string): number | null
  */
 export async function getAllUsers() {
   try {
-    // Return empty array during build time
-    if (process.env.NODE_ENV === 'production' && !process.env.DB_HOST) {
-      return [];
-    }
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`SELECT * FROM users ORDER BY created_at DESC`;
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -203,10 +209,8 @@ export async function getAllContent() {
  */
 export async function getAllBookings() {
   try {
-    // Return empty array during build time
-    if (process.env.NODE_ENV === 'production' && !process.env.DB_HOST) {
-      return [];
-    }
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT b.*, 
              u1.first_name as tutor_first_name, u1.last_name as tutor_last_name,
@@ -561,6 +565,9 @@ export async function deleteContentAction(id: number) {
  */
 export async function createBookingAction(formData: FormData) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
+    
     const tutorId = getIntegerField(formData, 'tutorId');
     const studentId = getIntegerField(formData, 'studentId');
     const sessionType = getStringField(formData, 'sessionType');

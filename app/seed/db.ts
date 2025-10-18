@@ -1,6 +1,11 @@
 import postgres from 'postgres';
 
 export function getDb() {
+  // Don't create connection during build time
+  if (typeof window === 'undefined' && !process.env.DB_HOST) {
+    throw new Error('Database not available during build');
+  }
+  
   const sql = postgres({
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
