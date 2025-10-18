@@ -172,10 +172,14 @@ function getOptionalIntegerField(formData: FormData, key: string): number | null
  */
 export async function getAllUsers() {
   try {
+    // Return empty array during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.DB_HOST) {
+      return [];
+    }
     return await sql`SELECT * FROM users ORDER BY created_at DESC`;
   } catch (error) {
     console.error('Error fetching users:', error);
-    throw new Error('Failed to fetch users');
+    return [];
   }
 }
 
@@ -199,6 +203,10 @@ export async function getAllContent() {
  */
 export async function getAllBookings() {
   try {
+    // Return empty array during build time
+    if (process.env.NODE_ENV === 'production' && !process.env.DB_HOST) {
+      return [];
+    }
     return await sql`
       SELECT b.*, 
              u1.first_name as tutor_first_name, u1.last_name as tutor_last_name,
@@ -210,7 +218,7 @@ export async function getAllBookings() {
     `;
   } catch (error) {
     console.error('Error fetching bookings:', error);
-    throw new Error('Failed to fetch bookings');
+    return [];
   }
 }
 
