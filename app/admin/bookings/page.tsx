@@ -216,7 +216,10 @@ export default async function BookingsPage({ searchParams }: { searchParams: Pro
           
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-medium mb-4">Create New Booking</h3>
-                <form action={createBookingAction} className="grid grid-cols-2 gap-4">
+                <form action={async (formData: FormData) => {
+                  'use server';
+                  await createBookingAction(formData);
+                }} className="grid grid-cols-2 gap-4">
                   <select name="tutorId" className="border rounded px-3 py-2" required>
                     <option value="">Select Tutor</option>
                     {tutors.map((tutor) => (
