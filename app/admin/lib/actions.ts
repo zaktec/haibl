@@ -334,9 +334,20 @@ export async function getAllQuestionsWithQuizzes() {
  * @returns Promise<Object> - Object containing count statistics for each table
  */
 export async function getDatabaseSummary() {
+  const defaultSummary = {
+    users: 0,
+    content: 0,
+    quizzes: 0,
+    questions: 0,
+    quiz_questions: 0,
+    bookings: 0,
+    progress: 0,
+    session_progress: 0
+  };
+  
   try {
     const sql = getSql();
-    if (!sql) return { users: 0, content: 0, quizzes: 0, questions: 0, quiz_questions: 0, bookings: 0, progress: 0, session_progress: 0 };
+    if (!sql) return defaultSummary;
     const counts = await Promise.allSettled([
       sql`SELECT COUNT(*) as count FROM users`,
       sql`SELECT COUNT(*) as count FROM content`,
@@ -348,28 +359,22 @@ export async function getDatabaseSummary() {
       sql`SELECT COUNT(*) as count FROM user_session_progress`
     ]);
     
+    const getCount = (index: number) => 
+      counts[index].status === 'fulfilled' ? parseInt(counts[index].value[0].count as string) : 0;
+    
     return {
-      users: counts[0].status === 'fulfilled' ? parseInt(counts[0].value[0].count as string) : 0,
-      content: counts[1].status === 'fulfilled' ? parseInt(counts[1].value[0].count as string) : 0,
-      quizzes: counts[2].status === 'fulfilled' ? parseInt(counts[2].value[0].count as string) : 0,
-      questions: counts[3].status === 'fulfilled' ? parseInt(counts[3].value[0].count as string) : 0,
-      quiz_questions: counts[4].status === 'fulfilled' ? parseInt(counts[4].value[0].count as string) : 0,
-      bookings: counts[5].status === 'fulfilled' ? parseInt(counts[5].value[0].count as string) : 0,
-      progress: counts[6].status === 'fulfilled' ? parseInt(counts[6].value[0].count as string) : 0,
-      session_progress: counts[7].status === 'fulfilled' ? parseInt(counts[7].value[0].count as string) : 0
+      users: getCount(0),
+      content: getCount(1),
+      quizzes: getCount(2),
+      questions: getCount(3),
+      quiz_questions: getCount(4),
+      bookings: getCount(5),
+      progress: getCount(6),
+      session_progress: getCount(7)
     };
   } catch (error) {
     console.error('Error fetching database summary:', error);
-    return {
-      users: 0,
-      content: 0,
-      quizzes: 0,
-      questions: 0,
-      quiz_questions: 0,
-      bookings: 0,
-      progress: 0,
-      session_progress: 0
-    };
+    return defaultSummary;
   }
 }
 
@@ -401,10 +406,24 @@ export async function createUserAction(formData: FormData) {
     
     const sql = getSql();
     if (!sql) return { error: 'Database not available' };
+    
+    const userFields = [
+      'first_name', 'last_name', 'email', 'password', 'role', 'year_group', 
+      'target_grade', 'school', 'course', 'contact_number', 'parents_name', 
+      'image_url', 'attachment_url'
+    ];
+    
+    const userValues = [
+      firstName, lastName, email, password, role, yearGroup, 
+      targetGrade, school, course, contactNumber, parentsName, 
+      imageUrl, attachmentUrl
+    ];
+    
     await sql`
-      INSERT INTO users (first_name, last_name, email, password, role, year_group, target_grade, school, course, contact_number, parents_name, image_url, attachment_url)
-      VALUES (${firstName}, ${lastName}, ${email}, ${password}, ${role}, ${yearGroup}, ${targetGrade}, ${school}, ${course}, ${contactNumber}, ${parentsName}, ${imageUrl}, ${attachmentUrl})
+      INSERT INTO users (${sql(userFields)})
+      VALUES (${sql(userValues)})
     `;
+    
     revalidatePath('/admin/users');
     return { success: true };
   } catch (error) {
