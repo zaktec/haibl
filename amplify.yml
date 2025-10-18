@@ -3,14 +3,16 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - npm ci
     build:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: .
     files:
-      - '**/*'
+      - '.next/**/*'
+      - 'public/**/*'
+      - 'package.json'
   cache:
     paths:
       - node_modules/**/*
