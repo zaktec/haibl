@@ -10,9 +10,7 @@ frontend:
   artifacts:
     baseDirectory: .
     files:
-      - '.next/**/*'
-      - 'public/**/*'
-      - 'package.json'
+      - '**/*'
   cache:
     paths:
       - node_modules/**/*
