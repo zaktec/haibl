@@ -7,7 +7,7 @@ declare var process: {
 
 export function getDb(): any {
   // Don't create connection during build time
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' || process.env.NODE_ENV === 'production' && !process.env.DB_HOST) {
     return null;
   }
   
