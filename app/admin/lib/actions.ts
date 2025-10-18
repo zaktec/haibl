@@ -16,7 +16,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { getDb } from '@/app/seed/db';
 
 // Initialize database connection only when needed
@@ -195,6 +194,8 @@ export async function getAllUsers() {
  */
 export async function getAllContent() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`SELECT * FROM content ORDER BY created_at DESC`;
   } catch (error) {
     console.error('Error fetching content:', error);
@@ -233,6 +234,8 @@ export async function getAllBookings() {
  */
 export async function getAllQuizzes() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT q.*, c.name as content_name
       FROM quizzes q
@@ -251,6 +254,8 @@ export async function getAllQuizzes() {
  */
 export async function getAllQuizzesForSelect() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT id, name, code
       FROM quizzes
@@ -268,6 +273,8 @@ export async function getAllQuizzesForSelect() {
  */
 export async function getAllTopics() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT DISTINCT topic
       FROM questions
@@ -286,6 +293,8 @@ export async function getAllTopics() {
  */
 export async function getAllQuestions() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`SELECT * FROM questions ORDER BY id DESC`;
   } catch (error) {
     console.error('Error fetching questions:', error);
@@ -299,6 +308,8 @@ export async function getAllQuestions() {
  */
 export async function getAllQuestionsWithQuizzes() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT q.*, 
              STRING_AGG(DISTINCT qz.name, ', ') as quiz_names,
@@ -324,6 +335,8 @@ export async function getAllQuestionsWithQuizzes() {
  */
 export async function getDatabaseSummary() {
   try {
+    const sql = getSql();
+    if (!sql) return { users: 0, content: 0, quizzes: 0, questions: 0, quiz_questions: 0, bookings: 0, progress: 0, session_progress: 0 };
     const counts = await Promise.allSettled([
       sql`SELECT COUNT(*) as count FROM users`,
       sql`SELECT COUNT(*) as count FROM content`,
@@ -386,6 +399,8 @@ export async function createUserAction(formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO users (first_name, last_name, email, password, role, year_group, target_grade, school, course, contact_number, parents_name, image_url, attachment_url)
       VALUES (${firstName}, ${lastName}, ${email}, ${password}, ${role}, ${yearGroup}, ${targetGrade}, ${school}, ${course}, ${contactNumber}, ${parentsName}, ${imageUrl}, ${attachmentUrl})
@@ -427,6 +442,8 @@ export async function updateUserAction(id: number, formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE users SET 
         first_name = ${firstName}, 
@@ -459,6 +476,8 @@ export async function updateUserAction(id: number, formData: FormData) {
  */
 export async function deleteUserAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM users WHERE id = ${id}`;
     revalidatePath('/admin/users');
     return { success: true };
@@ -492,6 +511,8 @@ export async function createContentAction(formData: FormData) {
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     const published = getBooleanField(formData, 'published');
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO content (clip_number, name, topic, content_type, tier, grade_min, grade_max, video_url, image_url, attachment_url, published)
       VALUES (${clipNumber}, ${name}, ${topic}, ${contentType}, ${tier}, ${gradeMin}, ${gradeMax}, ${videoUrl}, ${imageUrl}, ${attachmentUrl}, ${published})
@@ -518,6 +539,8 @@ export async function updateContentAction(id: number, formData: FormData) {
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     const published = getBooleanField(formData, 'published');
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE content SET 
         clip_number = ${clipNumber}, 
@@ -544,6 +567,8 @@ export async function updateContentAction(id: number, formData: FormData) {
 
 export async function deleteContentAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM content WHERE id = ${id}`;
     revalidatePath('/admin/content');
     return { success: true };
@@ -610,6 +635,8 @@ export async function updateBookingAction(id: number, formData: FormData) {
     const status = getStringField(formData, 'status');
     const notes = getOptionalStringField(formData, 'notes', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE bookings SET 
         tutor_id = ${tutorId}, 
@@ -635,6 +662,8 @@ export async function updateBookingAction(id: number, formData: FormData) {
 
 export async function deleteBookingAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM bookings WHERE id = ${id}`;
     revalidatePath('/admin/bookings');
     return { success: true };
@@ -668,6 +697,8 @@ export async function createQuizAction(formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO quizzes (name, code, content_id, time_limit, published, calculator_allowed, attempt_limit, shuffle_questions, pass_mark, image_url, attachment_url)
       VALUES (${name}, ${code}, ${contentId}, ${timeLimit}, ${published}, ${calculatorAllowed}, ${attemptLimit}, ${shuffleQuestions}, ${passMark}, ${imageUrl}, ${attachmentUrl})
@@ -694,6 +725,8 @@ export async function updateQuizAction(id: number, formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE quizzes SET 
         name = ${name}, 
@@ -720,6 +753,8 @@ export async function updateQuizAction(id: number, formData: FormData) {
 
 export async function deleteQuizAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM quizzes WHERE id = ${id}`;
     revalidatePath('/admin/quizzes');
     return { success: true };
@@ -757,6 +792,8 @@ export async function createQuestionAction(formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO questions (text, type, correct_answer, options, grade_min, grade_max, marks, active, topic, difficulty_level, explanation, solution_url, randomize_options, image_url, attachment_url)
       VALUES (${text}, ${type}, ${correctAnswer}, ${options}, ${gradeMin}, ${gradeMax}, ${marks}, ${active}, ${topic}, ${difficultyLevel}, ${explanation}, ${solutionUrl}, ${randomizeOptions}, ${imageUrl}, ${attachmentUrl})
@@ -787,6 +824,8 @@ export async function updateQuestionAction(id: number, formData: FormData) {
     const imageUrl = getOptionalStringField(formData, 'imageUrl', null);
     const attachmentUrl = getOptionalStringField(formData, 'attachmentUrl', null);
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE questions SET 
         text = ${text}, 
@@ -816,6 +855,8 @@ export async function updateQuestionAction(id: number, formData: FormData) {
 
 export async function deleteQuestionAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM questions WHERE id = ${id}`;
     revalidatePath('/admin/questions');
     return { success: true };
@@ -836,6 +877,8 @@ export async function deleteQuestionAction(id: number) {
  */
 export async function getAllQuizQuestions() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT qq.quiz_id, qq.question_id, qq.order_num,
              q.name as quiz_name, q.code as quiz_code,
@@ -854,6 +897,8 @@ export async function getAllQuizQuestions() {
 
 export async function getQuizWithQuestions(quizId: number) {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT qq.quiz_id, qq.question_id, qq.order_num,
              q.name as quiz_name, q.code as quiz_code, q.time_limit, q.published, q.calculator_allowed,
@@ -877,6 +922,8 @@ export async function createQuizQuestionAction(formData: FormData) {
     const questionId = getIntegerField(formData, 'questionId');
     const orderNum = getIntegerField(formData, 'orderNum');
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO quiz_questions (quiz_id, question_id, order_num)
       VALUES (${quizId}, ${questionId}, ${orderNum})
@@ -891,6 +938,8 @@ export async function createQuizQuestionAction(formData: FormData) {
 
 export async function deleteQuizQuestionAction(quizId: number, questionId: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM quiz_questions WHERE quiz_id = ${quizId} AND question_id = ${questionId}`;
     revalidatePath('/admin/quiz-questions');
     return { success: true };
@@ -911,6 +960,8 @@ export async function deleteQuizQuestionAction(quizId: number, questionId: numbe
  */
 export async function getAllProgress() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT p.id, p.user_id, p.content_id, p.quiz_id, p.completion, p.status, 
              p.grade, p.score, p.completed, p.sessions_count, p.created_at, p.updated_at,
@@ -934,6 +985,8 @@ export async function getAllProgress() {
  */
 export async function getAllSessionProgress() {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT sp.id, sp.session_number, sp.session_date, sp.completion, sp.score, sp.grade,
              sp.strengths, sp.areas_for_improvement, sp.student_reflection, sp.tutor_feedback,
@@ -965,6 +1018,8 @@ export async function createProgressAction(formData: FormData) {
     const completed = getBooleanField(formData, 'completed');
     const sessionsCount = getOptionalIntegerField(formData, 'sessionsCount') || 0;
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       INSERT INTO user_progress (
         user_id, content_id, quiz_id, completion, status, grade, score, completed, sessions_count
@@ -991,6 +1046,8 @@ export async function updateProgressAction(id: number, formData: FormData) {
     const completed = getBooleanField(formData, 'completed');
     const sessionsCount = getOptionalIntegerField(formData, 'sessionsCount') || 0;
     
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE user_progress SET 
         completion = ${completion}, 
@@ -1012,6 +1069,8 @@ export async function updateProgressAction(id: number, formData: FormData) {
 
 export async function deleteProgressAction(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`DELETE FROM user_progress WHERE id = ${id}`;
     revalidatePath('/admin/progress');
     return { success: true };
@@ -1050,6 +1109,9 @@ export async function saveQuizAnswersAction(formData: FormData) {
         answers[questionId].need_help = value === 'on';
       }
     }
+    
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     
     // Get correct answers for comparison
     const questions = await sql`
@@ -1115,6 +1177,8 @@ export async function saveQuizAnswersAction(formData: FormData) {
  */
 export async function getUsersByRole(role: string) {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT id, first_name, last_name, email 
       FROM users 
@@ -1134,6 +1198,8 @@ export async function getUsersByRole(role: string) {
  */
 export async function getUserById(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return null;
     const [user] = await sql`
       SELECT id, first_name, last_name, email, role, year_group, target_grade, 
              current_grade, exam_board, school, contact_number, class_preference,
@@ -1158,6 +1224,9 @@ export async function getUserById(id: number) {
  */
 export async function getUserRelatedData(userId: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { bookings: [], progress: [], sessions: [], authoredContent: [] };
+    
     // Get user's bookings (as student or tutor)
     const bookings = await sql`
       SELECT b.*, 
@@ -1221,6 +1290,8 @@ export async function getUserRelatedData(userId: number) {
  */
 export async function getContentById(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return null;
     const [content] = await sql`
       SELECT id, name, type, grade_min, grade_max, published, created_at, updated_at
       FROM content 
@@ -1240,6 +1311,8 @@ export async function getContentById(id: number) {
  */
 export async function getQuizById(id: number) {
   try {
+    const sql = getSql();
+    if (!sql) return null;
     const [quiz] = await sql`
       SELECT q.*, c.name as content_name
       FROM quizzes q
@@ -1271,6 +1344,8 @@ export async function getQuizById(id: number) {
  */
 export async function getPublishedContent(gradeLevel?: number) {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     if (gradeLevel) {
       return await sql`
         SELECT * FROM content 
@@ -1299,6 +1374,8 @@ export async function getPublishedContent(gradeLevel?: number) {
  */
 export async function getUserProgress(userId: number) {
   try {
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT p.*, c.name as content_name, c.type as content_type,
              q.name as quiz_name, q.code as quiz_code
@@ -1326,6 +1403,8 @@ export async function getUpcomingBookings(userId: number, role: 'tutor' | 'stude
     const otherRoleColumn = role === 'tutor' ? 'student_id' : 'tutor_id';
     const otherRolePrefix = role === 'tutor' ? 'student' : 'tutor';
     
+    const sql = getSql();
+    if (!sql) return [];
     return await sql`
       SELECT b.*, 
              u.first_name as ${otherRolePrefix}_first_name, 
@@ -1352,6 +1431,8 @@ export async function getUpcomingBookings(userId: number, role: 'tutor' | 'stude
  */
 export async function resetQuizProgressAction(userId: number, quizId: number) {
   try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
     await sql`
       DELETE FROM user_progress 
       WHERE user_id = ${userId} AND quiz_id = ${quizId}

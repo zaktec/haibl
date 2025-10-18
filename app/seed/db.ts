@@ -1,8 +1,13 @@
-import postgres from 'postgres';
+declare var require: any;
+const postgres = require('postgres');
 
-export function getDb() {
+declare var process: {
+  env: { [key: string]: string | undefined };
+};
+
+export function getDb(): any {
   // Don't create connection during build time
-  if (typeof window === 'undefined' && !process.env.DB_HOST) {
+  if (typeof window !== 'undefined') {
     return null;
   }
   

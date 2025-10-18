@@ -1,8 +1,8 @@
 import { getDb } from '../../seed/db';
 
-const sql = getDb();
-
 export async function getStudents() {
+  const sql = getDb();
+  if (!sql) return [];
   const result = await sql`
     SELECT id, first_name, last_name, email, year_group, target_grade, school, parents_name
     FROM users 
@@ -13,6 +13,8 @@ export async function getStudents() {
 }
 
 export async function getTutorInfo(tutorId: number) {
+  const sql = getDb();
+  if (!sql) return null;
   const result = await sql`
     SELECT first_name, last_name, email FROM users WHERE id = ${tutorId} AND role = 'tutor'
   `;
@@ -20,6 +22,8 @@ export async function getTutorInfo(tutorId: number) {
 }
 
 export async function getTutorBookingsCount(tutorId: number) {
+  const sql = getDb();
+  if (!sql) return 0;
   const result = await sql`
     SELECT COUNT(*) as count FROM bookings WHERE tutor_id = ${tutorId}
   `;
@@ -27,6 +31,8 @@ export async function getTutorBookingsCount(tutorId: number) {
 }
 
 export async function getTutorUpcomingBookings(tutorId: number) {
+  const sql = getDb();
+  if (!sql) return 0;
   const result = await sql`
     SELECT COUNT(*) as count FROM bookings 
     WHERE tutor_id = ${tutorId} AND scheduled_start > NOW() AND status = 'confirmed'
@@ -35,6 +41,8 @@ export async function getTutorUpcomingBookings(tutorId: number) {
 }
 
 export async function getStudentDetails(id: string) {
+  const sql = getDb();
+  if (!sql) return null;
   const studentResult = await sql`
     SELECT id, first_name, last_name, email, year_group, target_grade, school, parents_name, created_at
     FROM users 

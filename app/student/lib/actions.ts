@@ -1,8 +1,8 @@
-import { getDb } from '../../seed/db.js';
-
-const sql = getDb();
+import { getDb } from '../../seed/db';
 
 export async function getStudentProgress(studentId: number) {
+  const sql = getDb();
+  if (!sql) return [];
   const result = await sql`
     SELECT c.name, up.completion, up.status, up.grade, up.score, up.quiz_id
     FROM user_progress up
@@ -14,6 +14,8 @@ export async function getStudentProgress(studentId: number) {
 }
 
 export async function getStudentBookings(studentId: number) {
+  const sql = getDb();
+  if (!sql) return [];
   const result = await sql`
     SELECT b.*, u.first_name as tutor_first_name, u.last_name as tutor_last_name
     FROM bookings b
@@ -25,6 +27,8 @@ export async function getStudentBookings(studentId: number) {
 }
 
 export async function getQuizQuestions(quizId: number) {
+  const sql = getDb();
+  if (!sql) return [];
   const result = await sql`
     SELECT q.*, qq.order_num
     FROM questions q
@@ -36,6 +40,8 @@ export async function getQuizQuestions(quizId: number) {
 }
 
 export async function getQuizDetails(quizId: number) {
+  const sql = getDb();
+  if (!sql) return null;
   const result = await sql`
     SELECT * FROM quizzes WHERE id = ${quizId}
   `;
