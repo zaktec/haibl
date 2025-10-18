@@ -3,7 +3,7 @@ import postgres from 'postgres';
 export function getDb() {
   // Don't create connection during build time
   if (typeof window === 'undefined' && !process.env.DB_HOST) {
-    throw new Error('Database not available during build');
+    return null;
   }
   
   const sql = postgres({
