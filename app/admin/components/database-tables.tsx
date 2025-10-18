@@ -3,7 +3,7 @@ import { getDb } from '../../seed/db';
 async function getAllTables() {
   const sql = getDb();
 
-  const tables = {};
+  const tables: Record<string, any[]> = {};
 
   try {
     tables.users = await sql`SELECT * FROM users ORDER BY id`;
