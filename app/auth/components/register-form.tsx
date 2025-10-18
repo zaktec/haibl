@@ -9,17 +9,30 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/app/ui/button';
-import { useActionState } from 'react';
+import { useState } from 'react';
 import { register } from '@/app/auth/actions';
 
 export default function RegisterForm() {
-  const [errorMessage, formAction, isPending] = useActionState(
-    register,
-    undefined,
-  );
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [isPending, setIsPending] = useState(false);
+
+  const handleSubmit = async (formData: FormData) => {
+    setIsPending(true);
+    setErrorMessage(undefined);
+    try {
+      const result = await register(undefined, formData);
+      if (result) {
+        setErrorMessage(result);
+      }
+    } catch (error) {
+      setErrorMessage('Registration failed');
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form action={handleSubmit} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Create your account
