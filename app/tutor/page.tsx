@@ -3,12 +3,20 @@ import { getStudents, getTutorInfo, getTutorBookingsCount, getTutorUpcomingBooki
 import Breadcrumb from './breadcrumb';
 
 export default async function TutorPage() {
-  const students = await getStudents();
-  const tutorId = 3; // Hardcoded for demo - would come from auth
-
-  const tutorInfo = await getTutorInfo(tutorId);
-  const bookingsCount = await getTutorBookingsCount(tutorId);
-  const upcomingBookings = await getTutorUpcomingBookings(tutorId);
+  let students = [];
+  let tutorInfo = null;
+  let bookingsCount = 0;
+  let upcomingBookings = 0;
+  
+  try {
+    students = await getStudents();
+    const tutorId = 3; // Hardcoded for demo - would come from auth
+    tutorInfo = await getTutorInfo(tutorId);
+    bookingsCount = await getTutorBookingsCount(tutorId);
+    upcomingBookings = await getTutorUpcomingBookings(tutorId);
+  } catch (error) {
+    console.log('Database not available during build');
+  }
 
   return (
     <div className="p-6">
