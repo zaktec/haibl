@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation';
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
   try {
-    // Simplified auth for deployment
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     
@@ -12,8 +11,17 @@ export async function authenticate(prevState: string | undefined, formData: Form
       return 'Please fill in all fields';
     }
     
-    // For now, just redirect to admin for any login
-    redirect('/admin');
+    // Route based on email/role
+    if (email === 'admin@mathstutorhelp.com') {
+      redirect('/admin');
+    } else if (email === 'tutor@mathstutorhelp.com') {
+      redirect('/tutor');
+    } else if (email === 'student@mathstutorhelp.com') {
+      redirect('/student');
+    } else {
+      // Default to student for other emails
+      redirect('/student');
+    }
   } catch (error) {
     return 'Authentication failed';
   }

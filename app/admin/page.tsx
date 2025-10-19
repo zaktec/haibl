@@ -29,12 +29,53 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
   // Await search parameters for Next.js 15 compatibility
   const params = await searchParams;
   
-  // Fetch core data for dashboard display in parallel
-  const [users, quizzes, summary] = await Promise.all([
-    getAllUsers(),
-    getAllQuizzes(),
-    getDatabaseSummary()
-  ]);
+  // Check database availability
+  let users = [], quizzes = [], summary = { users: 0, content: 0, quizzes: 0, questions: 0, quiz_questions: 0, bookings: 0, progress: 0, session_progress: 0 };
+  let dbAvailable = true;
+  
+  try {
+    // Fetch core data for dashboard display in parallel
+    [users, quizzes, summary] = await Promise.all([
+      getAllUsers(),
+      getAllQuizzes(),
+      getDatabaseSummary()
+    ]);
+  } catch (error) {
+    console.warn('Database not available:', error);
+    dbAvailable = false;
+  }
+  
+  // If database is not available, show local development mode
+  if (!dbAvailable) {
+    return (
+      <div className="pt-16 flex h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="flex-1 overflow-auto">
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6">Admin Panel - Local Development Mode</h1>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-medium text-yellow-800 mb-2">Database Offline</h3>
+              <p className="text-yellow-700">Connect to database to access full admin features</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white shadow rounded-lg p-6">
+                <h3 className="text-lg font-medium mb-4 text-blue-600">👥 Users</h3>
+                <div className="text-3xl font-bold text-gray-900">Demo Mode</div>
+              </div>
+              <div className="bg-white shadow rounded-lg p-6">
+                <h3 className="text-lg font-medium mb-4 text-green-600">📚 Content</h3>
+                <div className="text-3xl font-bold text-gray-900">Demo Mode</div>
+              </div>
+              <div className="bg-white shadow rounded-lg p-6">
+                <h3 className="text-lg font-medium mb-4 text-purple-600">📝 Quizzes</h3>
+                <div className="text-3xl font-bold text-gray-900">Demo Mode</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
 
   

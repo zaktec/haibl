@@ -1,7 +1,5 @@
-import bcrypt from 'bcrypt';
-
 export async function seedUsers(sql: any) {
-  const hashedPassword = await bcrypt.hash('password123', 10);
+  const hashedPassword = '$2b$10$abcdefghijklmnopqrstuvwxyz123456'; // Pre-hashed '123'
   
   const adminUsers = await sql`
     INSERT INTO users (first_name, last_name, email, password, role) VALUES

@@ -8,6 +8,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-indigo-600">Hai-bl</h1>
           <nav className="space-x-4">
+            <Link href="/seed/page" className="text-gray-600 hover:text-indigo-600">Seed DB</Link>
             <Link href="/auth/login" className="text-gray-600 hover:text-indigo-600">Login</Link>
             <Link href="/auth/register" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Sign Up</Link>
           </nav>
@@ -18,8 +19,8 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 py-20">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Master Math with
-            <span className="text-indigo-600"> Expert Tutors</span>
+            Excel with Human Tutors
+            <span className="text-indigo-600"> + AI Expertise</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             HAiBL: A human-guided, AI-powered blended learning platform built for smarter, more personalised education.
