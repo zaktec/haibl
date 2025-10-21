@@ -8,7 +8,12 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true
-  }
+  },
+  images: {
+    domains: ['your-bucket-name.s3.us-east-1.amazonaws.com']
+  },
+  compress: true,
+  poweredByHeader: false
 };
 
 module.exports = nextConfig;

@@ -13,7 +13,7 @@ function MailForm() {
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response = await fetch('/endpoints', {
+            const response = await fetch('/onboarding/path', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ function MailForm() {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 p-8 rounded-md bg-white shadow-md">
+        <div className="max-w-3xl mx-auto mt-10 p-8 rounded-md bg-white shadow-md" suppressHydrationWarning>
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-4">Maths Tutor Help – Group Class Booking Form</h1>
                 <p className="text-gray-600 mb-6 text-center">Thank you for your interest in our Maths Revision Classes in Levenshulme, Manchester, starting on 26th October 2025.
@@ -153,7 +153,7 @@ Please give us your details and complete the form below so we can learn more abo
                 
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Class Preference</h2>
-                    <p className="text-gray-600 mb-3">Please select which class you&apos;d like to join:</p>
+                    <p className="text-gray-600 mb-3">Please select which class you'd like to join:</p>
                     
                     <div className="space-y-3">
                         <label className="flex items-start">

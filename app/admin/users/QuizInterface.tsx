@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import React from 'react';
 
 interface QuizQuestion {
   question_id: number;
@@ -20,9 +21,29 @@ interface QuizInterfaceProps {
   quizDetailsId: number;
   resetQuizAction: () => Promise<void>;
   userRole?: string;
+  studentId?: number;
 }
 
-export default function QuizInterface({ quizWithQuestions, quizDetailsId, resetQuizAction, userRole }: QuizInterfaceProps) {
+export default function QuizInterface({ quizWithQuestions, quizDetailsId, resetQuizAction, userRole, studentId }: QuizInterfaceProps) {
+  const [studentAnswers, setStudentAnswers] = React.useState<any>(null);
+  
+  React.useEffect(() => {
+    if (studentId && quizDetailsId && userRole === 'tutor') {
+      // Simulate loading student answers from database
+      // In a real app, this would be an API call
+      const mockAnswers = {
+        answers: {
+          '1': { working_out: 'Sample working out...', final_answer: '42', need_help: false },
+          '2': { working_out: 'Another working...', final_answer: 'x = 5', need_help: true }
+        },
+        answer_scores: {
+          '1': { marks_awarded: 3, max_marks: 5, is_correct: false },
+          '2': { marks_awarded: 5, max_marks: 5, is_correct: true }
+        }
+      };
+      setStudentAnswers(mockAnswers);
+    }
+  }, [studentId, quizDetailsId, userRole]);
   const showAllAnswers = () => {
     const answerBoxes = document.querySelectorAll('[data-answer-box]');
     const showButtons = document.querySelectorAll('[data-show-answer-btn]');
@@ -88,37 +109,71 @@ export default function QuizInterface({ quizWithQuestions, quizDetailsId, resetQ
                 </div>
                 <Link href={`/admin/questions?view=${item.question_id}`} className="text-sm text-blue-600 hover:text-blue-800 hover:underline mb-3 block">{item.question_text}</Link>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Working Out:</label>
-                    <textarea 
-                      name={`working_out_${item.question_id}`}
-                      placeholder="Show your working here..."
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      rows={4}
-                    ></textarea>
+                {userRole === 'tutor' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                    <div>
+                      <h4 className="text-xs font-medium text-gray-700 mb-1">Student's Working:</h4>
+                      <div className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50 min-h-[100px]">
+                        {studentAnswers?.answers?.[item.question_id]?.working_out || 'No working shown'}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-medium text-gray-700 mb-1">Student's Answer:</h4>
+                      <div className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50 min-h-[50px]">
+                        {studentAnswers?.answers?.[item.question_id]?.final_answer || 'No answer provided'}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-medium text-gray-700 mb-1">Score:</h4>
+                      <div className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-50">
+                        {studentAnswers?.answer_scores?.[item.question_id] ? 
+                          `${studentAnswers.answer_scores[item.question_id].marks_awarded}/${studentAnswers.answer_scores[item.question_id].max_marks}` : 
+                          'Not scored'
+                        }
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Final Answer:</label>
-                    <textarea 
-                      name={`final_answer_${item.question_id}`}
-                      placeholder="Your final answer..."
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      rows={2}
-                    ></textarea>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Working Out:</label>
+                      <textarea 
+                        name={`working_out_${item.question_id}`}
+                        placeholder="Show your working here..."
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        rows={4}
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Final Answer:</label>
+                      <textarea 
+                        name={`final_answer_${item.question_id}`}
+                        placeholder="Your final answer..."
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        rows={2}
+                      ></textarea>
+                    </div>
                   </div>
-                </div>
+                )}
                 
-                <div className="mb-3">
-                  <label className="flex items-center space-x-2 text-sm">
-                    <input 
-                      type="checkbox" 
-                      name={`need_help_${item.question_id}`}
-                      className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
-                    />
-                    <span className="text-orange-600 font-medium">Need help with this question</span>
-                  </label>
-                </div>
+                {userRole === 'tutor' ? (
+                  studentAnswers?.answers?.[item.question_id]?.need_help && (
+                    <div className="mb-3 p-2 bg-orange-50 border border-orange-200 rounded">
+                      <span className="text-orange-600 font-medium text-sm">🆘 Student requested help with this question</span>
+                    </div>
+                  )
+                ) : (
+                  <div className="mb-3">
+                    <label className="flex items-center space-x-2 text-sm">
+                      <input 
+                        type="checkbox" 
+                        name={`need_help_${item.question_id}`}
+                        className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                      />
+                      <span className="text-orange-600 font-medium">Need help with this question</span>
+                    </label>
+                  </div>
+                )}
                 
                 {(userRole === 'admin' || userRole === 'tutor') && (
                   <div className="mb-3">
@@ -130,7 +185,7 @@ export default function QuizInterface({ quizWithQuestions, quizDetailsId, resetQ
                     >
                       Show Answer
                     </button>
-                    <div data-answer-box style={{display: 'none'}} className="mt-2 p-3 bg-green-50 border border-green-200 rounded">
+                    <div data-answer-box className="mt-2 p-3 bg-green-50 border border-green-200 rounded">
                       <p className="text-sm font-medium text-green-800">Correct Answer:</p>
                       <p className="text-sm text-green-700">{item.correct_answer}</p>
                     </div>

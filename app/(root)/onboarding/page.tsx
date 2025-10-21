@@ -1,4 +1,9 @@
-import MailForm from '@/app/ui/root/MailForm';
+import dynamic from 'next/dynamic';
+
+const MailForm = dynamic(() => import('./MailForm'), {
+  ssr: false,
+  loading: () => <div className="flex justify-center items-center min-h-screen">Loading...</div>
+});
 import { Metadata } from 'next';
 
 

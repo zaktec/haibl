@@ -53,10 +53,7 @@ export async function seedContent(sql: any, adminUsers: any[]) {
     ('C047', 'Translations', 'Geometry and Measure', 'lesson', 'Foundation', 2, 2, true, ${adminUsers[0].id}),
     ('C048', 'Plans and Elevations', 'Geometry and Measure', 'lesson', 'Foundation', 2, 2, true, ${adminUsers[0].id}),
     ('C049', 'Perimeters', 'Geometry and Measure', 'lesson', 'Foundation', 2, 2, true, ${adminUsers[0].id}),
-    ('C050', 'Area of a rectangle', 'Geometry and Measure', 'lesson', 'Foundation', 2, 2, true, ${adminUsers[0].id}),
-    
-    -- GCSE Exam Paper
-    ('GCSE2022', 'GCSE Maths Paper 1H November 2022', 'Mixed', 'quiz', 'Higher', 9, 11, true, ${adminUsers[0].id})
+    ('C050', 'Area of a rectangle', 'Geometry and Measure', 'lesson', 'Foundation', 2, 2, true, ${adminUsers[0].id})
     RETURNING id
   `;
 }

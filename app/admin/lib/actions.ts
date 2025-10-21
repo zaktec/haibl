@@ -16,6 +16,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { getDb } from '@/app/seed/db';
 
 // Initialize database connection only when needed
@@ -795,6 +796,7 @@ export async function deleteQuizAction(id: number) {
  */
 export async function createQuestionAction(formData: FormData) {
   try {
+    const contentId = getOptionalIntegerField(formData, 'contentId');
     const text = getStringField(formData, 'text');
     const type = getStringField(formData, 'type');
     const correctAnswer = getStringField(formData, 'correctAnswer');
@@ -814,8 +816,8 @@ export async function createQuestionAction(formData: FormData) {
     const sql = getSql();
     if (!sql) return { error: 'Database not available' };
     await sql`
-      INSERT INTO questions (text, type, correct_answer, options, grade_min, grade_max, marks, active, topic, difficulty_level, explanation, solution_url, randomize_options, image_url, attachment_url)
-      VALUES (${text}, ${type}, ${correctAnswer}, ${options}, ${gradeMin}, ${gradeMax}, ${marks}, ${active}, ${topic}, ${difficultyLevel}, ${explanation}, ${solutionUrl}, ${randomizeOptions}, ${imageUrl}, ${attachmentUrl})
+      INSERT INTO questions (content_id, text, type, correct_answer, options, grade_min, grade_max, marks, active, topic, difficulty_level, explanation, solution_url, randomize_options, image_url, attachment_url)
+      VALUES (${contentId}, ${text}, ${type}, ${correctAnswer}, ${options}, ${gradeMin}, ${gradeMax}, ${marks}, ${active}, ${topic}, ${difficultyLevel}, ${explanation}, ${solutionUrl}, ${randomizeOptions}, ${imageUrl}, ${attachmentUrl})
     `;
     revalidatePath('/admin/questions');
     return { success: true };
@@ -827,6 +829,7 @@ export async function createQuestionAction(formData: FormData) {
 
 export async function updateQuestionAction(id: number, formData: FormData) {
   try {
+    const contentId = getOptionalIntegerField(formData, 'contentId');
     const text = getStringField(formData, 'text');
     const type = getStringField(formData, 'type');
     const correctAnswer = getStringField(formData, 'correctAnswer');
@@ -847,6 +850,7 @@ export async function updateQuestionAction(id: number, formData: FormData) {
     if (!sql) return { error: 'Database not available' };
     await sql`
       UPDATE questions SET 
+        content_id = ${contentId},
         text = ${text}, 
         type = ${type}, 
         correct_answer = ${correctAnswer}, 
@@ -1028,9 +1032,26 @@ export async function getAllSessionProgress() {
 export async function createProgressAction(formData: FormData) {
   try {
     const userId = getIntegerField(formData, 'userId');
-    const contentId = getIntegerField(formData, 'contentId');
-    const quizId = getOptionalIntegerField(formData, 'quizId');
-    const completion = getIntegerField(formData, 'completion');
+    const assignmentType = getOptionalStringField(formData, 'assignmentType', 'content');
+    
+    // Handle assignment type logic
+    let contentId = null;
+    let quizId = null;
+    
+    if (assignmentType === 'quiz') {
+      quizId = getOptionalIntegerField(formData, 'quizId');
+      if (!quizId) {
+        return { error: 'Quiz is required for quiz assignments' };
+      }
+    } else {
+      contentId = getOptionalIntegerField(formData, 'contentId');
+      quizId = getOptionalIntegerField(formData, 'quizId'); // Optional for content assignments
+      if (!contentId) {
+        return { error: 'Content is required for content assignments' };
+      }
+    }
+    
+    const completion = getOptionalIntegerField(formData, 'completion') || 0;
     const status = getStringField(formData, 'status');
     const grade = getOptionalNumberField(formData, 'grade');
     const score = getOptionalIntegerField(formData, 'score');
@@ -1049,6 +1070,7 @@ export async function createProgressAction(formData: FormData) {
       )
     `;
     revalidatePath('/admin/progress');
+    revalidatePath('/tutor/student');
     return { success: true };
   } catch (error) {
     console.error('Error creating progress:', error);
@@ -1178,10 +1200,11 @@ export async function saveQuizAnswersAction(formData: FormData) {
     `;
     
     revalidatePath('/admin/users');
-    return { success: true, score: percentage, totalMarks: totalScore, maxMarks: maxScore };
+    revalidatePath('/student');
+    redirect('/student');
   } catch (error) {
     console.error('Error saving quiz answers:', error);
-    return { error: error instanceof Error ? error.message : 'Failed to save answers' };
+    throw new Error(error instanceof Error ? error.message : 'Failed to save answers');
   }
 }
 
@@ -1457,9 +1480,31 @@ export async function resetQuizProgressAction(userId: number, quizId: number) {
       WHERE user_id = ${userId} AND quiz_id = ${quizId}
     `;
     revalidatePath('/admin/users');
+    revalidatePath('/tutor/student');
     return { success: true };
   } catch (error) {
     console.error('Error resetting quiz progress:', error);
     return { error: 'Failed to reset quiz progress' };
+  }
+}
+
+export async function resetAllProgressAction(userId: number) {
+  try {
+    const sql = getSql();
+    if (!sql) return { error: 'Database not available' };
+    await sql`
+      DELETE FROM user_session_progress 
+      WHERE user_progress_id IN (
+        SELECT id FROM user_progress WHERE user_id = ${userId}
+      )
+    `;
+    await sql`
+      DELETE FROM user_progress WHERE user_id = ${userId}
+    `;
+    revalidatePath('/tutor/student');
+    return { success: true };
+  } catch (error) {
+    console.error('Error resetting all progress:', error);
+    return { error: 'Failed to reset all progress' };
   }
 }

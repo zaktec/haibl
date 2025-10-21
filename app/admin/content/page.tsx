@@ -3,6 +3,7 @@ import { getAllContent, updateContentAction } from '@/app/admin/lib/actions';
 import { createContentAction, deleteContentAction } from '@/app/admin/lib/actions';
 import Link from 'next/link';
 import Breadcrumb from '../components/breadcrumb';
+import ImageUpload from '@/app/ui/ImageUpload';
 
 export default async function ContentPage({ searchParams }: { searchParams: Promise<{ view?: string; edit?: string }> }) {
   const params = await searchParams;
@@ -50,7 +51,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
                   <input name="gradeMin" type="number" defaultValue={editContent.grade_min} placeholder="Min Grade" className="border rounded px-3 py-2" required />
                   <input name="gradeMax" type="number" defaultValue={editContent.grade_max} placeholder="Max Grade" className="border rounded px-3 py-2" required />
                   <input name="videoUrl" defaultValue={editContent.video_url || ''} placeholder="Video URL" className="border rounded px-3 py-2" />
-                  <input name="imageUrl" defaultValue={editContent.image_url || ''} placeholder="Image URL" className="border rounded px-3 py-2" />
+                  <ImageUpload name="imageUrl" label="Image" currentUrl={editContent.image_url || ''} />
                   <input name="attachmentUrl" defaultValue={editContent.attachment_url || ''} placeholder="Attachment URL" className="border rounded px-3 py-2" />
                   <div className="flex items-center space-x-2">
                     <input name="published" type="checkbox" defaultChecked={editContent.published} />
@@ -196,7 +197,7 @@ export default async function ContentPage({ searchParams }: { searchParams: Prom
               <input name="gradeMin" type="number" placeholder="Min Grade" className="border rounded px-3 py-2" required />
               <input name="gradeMax" type="number" placeholder="Max Grade" className="border rounded px-3 py-2" required />
               <input name="videoUrl" placeholder="Video URL" className="border rounded px-3 py-2" />
-              <input name="imageUrl" placeholder="Image URL" className="border rounded px-3 py-2" />
+              <ImageUpload name="imageUrl" label="Image" />
               <input name="attachmentUrl" placeholder="Attachment URL" className="border rounded px-3 py-2" />
               <select name="published" className="border rounded px-3 py-2" required>
                 <option value="false">Draft</option>

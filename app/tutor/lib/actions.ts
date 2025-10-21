@@ -52,9 +52,10 @@ export async function getStudentDetails(id: string) {
   if (studentResult.length === 0) return null;
 
   const progressResult = await sql`
-    SELECT c.name as content_name, up.completion, up.status, up.grade, up.score, up.quiz_id, q.name as quiz_name, q.code as quiz_code
+    SELECT up.id, c.name as content_name, up.completion, up.status, up.grade, up.score, up.quiz_id, up.created_at, up.updated_at,
+           q.name as quiz_name, q.code as quiz_code
     FROM user_progress up
-    JOIN content c ON up.content_id = c.id
+    LEFT JOIN content c ON up.content_id = c.id
     LEFT JOIN quizzes q ON up.quiz_id = q.id
     WHERE up.user_id = ${id}
     ORDER BY up.updated_at DESC
@@ -71,5 +72,34 @@ export async function getStudentDetails(id: string) {
     student: studentResult[0],
     progress: progressResult,
     bookings: bookingsResult
+  };
+}
+
+export async function getStudentQuizAnswers(userId: string, quizId: number) {
+  const sql = getDb();
+  if (!sql) return null;
+  
+  const result = await sql`
+    SELECT up.answers, up.answer_scores, up.score, up.status, up.updated_at,
+           q.name as quiz_name, q.code as quiz_code
+    FROM user_progress up
+    LEFT JOIN quizzes q ON up.quiz_id = q.id
+    WHERE up.user_id = ${userId} AND up.quiz_id = ${quizId}
+  `;
+  
+  if (result.length === 0) return null;
+  
+  // Get quiz questions for context
+  const questions = await sql`
+    SELECT qs.id, qs.text, qs.correct_answer, qs.marks, qq.order_num
+    FROM questions qs
+    JOIN quiz_questions qq ON qs.id = qq.question_id
+    WHERE qq.quiz_id = ${quizId}
+    ORDER BY qq.order_num
+  `;
+  
+  return {
+    ...result[0],
+    questions
   };
 }

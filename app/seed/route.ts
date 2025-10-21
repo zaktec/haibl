@@ -57,6 +57,7 @@ const createTables = async (sql: any) => {
     )`,
     `CREATE TABLE IF NOT EXISTS questions (
       id SERIAL PRIMARY KEY,
+      content_id INTEGER REFERENCES content(id),
       text TEXT NOT NULL,
       type VARCHAR(50) DEFAULT 'multiple_choice',
       correct_answer TEXT NOT NULL,
@@ -157,6 +158,22 @@ const createTables = async (sql: any) => {
   for (const table of tables) {
     await sql.unsafe(table);
   }
+  
+  // Add indexes for performance
+  const indexes = [
+    'CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)',
+    'CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)',
+    'CREATE INDEX IF NOT EXISTS idx_content_published ON content(published)',
+    'CREATE INDEX IF NOT EXISTS idx_questions_content_id ON questions(content_id)',
+    'CREATE INDEX IF NOT EXISTS idx_quizzes_content_id ON quizzes(content_id)',
+    'CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress(user_id)',
+    'CREATE INDEX IF NOT EXISTS idx_bookings_student_id ON bookings(student_id)',
+    'CREATE INDEX IF NOT EXISTS idx_bookings_tutor_id ON bookings(tutor_id)'
+  ];
+  
+  for (const index of indexes) {
+    await sql.unsafe(index);
+  }
 };
 
 const seedData = async (sql: any) => {
@@ -178,7 +195,7 @@ const seedData = async (sql: any) => {
   }
 
   try {
-    questions = await seedQuestions(sql);
+    questions = await seedQuestions(sql, content);
     console.log("Questions seeded successfully");
   } catch (e) {
     console.error("Questions seeding failed:", e);

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getDb } from '@/app/seed/db';
 import ExpandableSection from './ExpandableSection';
 import { saveQuizAnswersAction, resetQuizProgressAction } from '@/app/admin/lib/actions';
+import SaveButton from './SaveButton';
 
 export default async function StudentDashboard({ searchParams }: { searchParams: Promise<{ quiz?: string }> }) {
   const params = await searchParams;
@@ -183,9 +184,7 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
             <div className="bg-white rounded-lg shadow">
               <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-lg font-medium text-gray-900">Questions ({quizWithQuestions.length})</h2>
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                  Submit Answers
-                </button>
+                <SaveButton quizId={quizId} />
               </div>
               <div className="divide-y divide-gray-200">
                 {quizWithQuestions.map((item) => (
@@ -250,11 +249,16 @@ export default async function StudentDashboard({ searchParams }: { searchParams:
             </div>
             
             {/* Submit button at bottom */}
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-              <button type="submit" className="w-full bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium">
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex space-x-4">
+              <button type="button" className="flex-1 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 font-medium">
+                <SaveButton quizId={quizId} />
+              </button>
+              <button type="submit" className="flex-1 bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-medium">
                 Submit All Answers
               </button>
             </div>
+            
+
           </form>
         </div>
       </div>

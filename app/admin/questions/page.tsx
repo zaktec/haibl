@@ -2,12 +2,14 @@ import AdminSidebar from '@/app/admin/components/sidebar';
 import { getAllQuestionsWithQuizzes, getAllQuizzesForSelect, getAllTopics, createQuestionAction, updateQuestionAction, deleteQuestionAction } from '@/app/admin/lib/actions';
 import Link from 'next/link';
 import Breadcrumb from '../components/breadcrumb';
+import ImageUpload from '@/app/ui/ImageUpload';
 
 export default async function QuestionsPage({ searchParams }: { searchParams: Promise<{ view?: string; edit?: string; quiz?: string; topic?: string }> }) {
   const params = await searchParams;
   const allQuestions = await getAllQuestionsWithQuizzes();
   const allQuizzes = await getAllQuizzesForSelect();
   const allTopics = await getAllTopics();
+  const content = await getAllContent();
   const quizFilter = params.quiz || '';
   const topicFilter = params.topic || '';
   
@@ -49,6 +51,15 @@ export default async function QuestionsPage({ searchParams }: { searchParams: Pr
                   'use server';
                   await updateQuestionAction(editQuestion.id, formData);
                 }} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+                    <select name="contentId" defaultValue={editQuestion.content_id || ''} className="border rounded px-3 py-2 w-full">
+                      <option value="">Select Content (Optional)</option>
+                      {content.map((item) => (
+                        <option key={item.id} value={item.id}>{item.name}</option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
                     <textarea name="text" defaultValue={editQuestion.text} placeholder="Enter question text" className="border rounded px-3 py-2 w-full" rows={3} required></textarea>
@@ -105,7 +116,7 @@ export default async function QuestionsPage({ searchParams }: { searchParams: Pr
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                      <input name="imageUrl" defaultValue={editQuestion.image_url || ''} placeholder="Question image URL" className="border rounded px-3 py-2 w-full" />
+                      <ImageUpload name="imageUrl" label="Question Image" currentUrl={editQuestion.image_url || ''} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Attachment URL</label>
@@ -334,6 +345,15 @@ export default async function QuestionsPage({ searchParams }: { searchParams: Pr
                 <h3 className="text-lg font-medium mb-4">Create New Question</h3>
                 <form action={createQuestionAction} className="space-y-4">
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+                    <select name="contentId" className="border rounded px-3 py-2 w-full">
+                      <option value="">Select Content (Optional)</option>
+                      {content.map((item) => (
+                        <option key={item.id} value={item.id}>{item.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
                     <textarea name="text" placeholder="Enter question text" className="border rounded px-3 py-2 w-full" rows={3} required></textarea>
                   </div>
@@ -390,7 +410,7 @@ export default async function QuestionsPage({ searchParams }: { searchParams: Pr
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                      <input name="imageUrl" placeholder="Question image URL" className="border rounded px-3 py-2 w-full" />
+                      <ImageUpload name="imageUrl" label="Question Image" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Attachment URL</label>
