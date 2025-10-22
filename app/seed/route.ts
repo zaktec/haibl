@@ -166,13 +166,15 @@ const createTables = async (sql: any) => {
     'CREATE INDEX IF NOT EXISTS idx_content_published ON content(published)',
     'CREATE INDEX IF NOT EXISTS idx_questions_content_id ON questions(content_id)',
     'CREATE INDEX IF NOT EXISTS idx_quizzes_content_id ON quizzes(content_id)',
-    'CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress(user_id)',
-    'CREATE INDEX IF NOT EXISTS idx_bookings_student_id ON bookings(student_id)',
-    'CREATE INDEX IF NOT EXISTS idx_bookings_tutor_id ON bookings(tutor_id)'
+    'CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress(user_id)'
   ];
   
   for (const index of indexes) {
-    await sql.unsafe(index);
+    try {
+      await sql.unsafe(index);
+    } catch (error) {
+      console.log('Index creation skipped:', error.message);
+    }
   }
 };
 
@@ -234,10 +236,18 @@ const seedData = async (sql: any) => {
 
 export async function GET() {
   try {
+    console.log('Environment variables:', {
+      DB_HOST: process.env.DB_HOST,
+      DB_PORT: process.env.DB_PORT,
+      DB_NAME: process.env.DB_NAME,
+      DB_USER: process.env.DB_USER,
+      DB_PASSWORD: process.env.DB_PASSWORD ? '***' : 'missing'
+    });
+    
     const sql = getDb();
     if (!sql) {
       return Response.json(
-        { error: "Database not available" },
+        { error: "Database not available - check environment variables and database connection" },
         { status: 500 }
       );
     }
