@@ -244,6 +244,20 @@ export async function GET() {
       DB_PASSWORD: process.env.DB_PASSWORD ? '***' : 'missing'
     });
     
+    // Return debug info if no database connection
+    if (!process.env.DB_HOST) {
+      return Response.json({
+        error: "Environment variables missing",
+        debug: {
+          DB_HOST: process.env.DB_HOST || 'missing',
+          DB_PORT: process.env.DB_PORT || 'missing',
+          DB_NAME: process.env.DB_NAME || 'missing',
+          DB_USER: process.env.DB_USER || 'missing',
+          DB_PASSWORD: process.env.DB_PASSWORD ? 'set' : 'missing'
+        }
+      }, { status: 500 });
+    }
+    
     const sql = getDb();
     if (!sql) {
       return Response.json(
