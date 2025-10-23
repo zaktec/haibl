@@ -339,3 +339,48 @@ export async function GET() {
 export async function POST() {
   return GET(); // Same functionality
 }
+
+// Connection test endpoint at /api/connection-test
+export async function OPTIONS() {
+  const { Pool } = require('pg');
+  
+  const envCheck = {
+    DB_HOST: process.env.DB_HOST || 'MISSING',
+    DB_PORT: process.env.DB_PORT || 'MISSING',
+    DB_NAME: process.env.DB_NAME || 'MISSING', 
+    DB_USER: process.env.DB_USER || 'MISSING',
+    DB_PASSWORD: process.env.DB_PASSWORD ? 'SET' : 'MISSING'
+  };
+  
+  const pool = new Pool({
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '5432'),
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 10000
+  });
+  
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT NOW() as time, current_database() as db');
+    client.release();
+    
+    return Response.json({
+      success: true,
+      message: 'Database connected!',
+      data: result.rows[0],
+      env: envCheck
+    });
+  } catch (error: any) {
+    return Response.json({
+      success: false,
+      error: error.message,
+      code: error.code,
+      env: envCheck
+    }, { status: 500 });
+  } finally {
+    await pool.end();
+  }
+}
