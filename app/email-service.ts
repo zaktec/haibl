@@ -10,8 +10,8 @@ const sesClient = new SESClient({
 
 export async function sendEmail(formData: any) {
   console.log('AWS Config:', {
-    region: process.env.AWS_REGION,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID?.substring(0, 8) + '...',
+    region: process.env.REGION,
+    accessKeyId: process.env.ACCESS_KEY_ID?.substring(0, 8) + '...',
     fromEmail: process.env.FROM_EMAIL
   });
 
@@ -56,8 +56,19 @@ Notes: ${formData.notes || 'None'}
     },
   });
 
-  console.log('Sending email with SES...');
-  const result = await sesClient.send(command);
-  console.log('Email sent successfully:', result.MessageId);
-  return result;
+  try {
+    console.log('Sending email with SES...');
+    const result = await sesClient.send(command);
+    console.log('Email sent successfully:', result.MessageId);
+    return result;
+  } catch (error: any) {
+    console.error('SES Error Details:', {
+      name: error.name,
+      message: error.message,
+      code: error.$metadata?.httpStatusCode,
+      requestId: error.$metadata?.requestId,
+      stack: error.stack
+    });
+    throw error;
+  }
 }
