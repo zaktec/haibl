@@ -3,9 +3,14 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci        # cleaner install, ensures lockfile integrity
+        - npm ci
     build:
       commands:
+        - env | grep -e DB_ >> .env.production
+        - env | grep -e REGION >> .env.production
+        - env | grep -e ACCESS_KEY_ID >> .env.production
+        - env | grep -e SECRET_ACCESS_KEY >> .env.production
+        - env | grep -e FROM_EMAIL >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
