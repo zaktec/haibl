@@ -258,6 +258,32 @@ export async function GET() {
       }, { status: 500 });
     }
     
+    // Test direct connection
+    try {
+      const { Pool } = require('pg');
+      const pool = new Pool({
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT || '5432'),
+        database: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        ssl: { rejectUnauthorized: false }
+      });
+      
+      const client = await pool.connect();
+      const result = await client.query('SELECT NOW() as connection_time');
+      client.release();
+      
+      console.log('✅ Direct DB connection successful');
+    } catch (dbError: any) {
+      console.error('❌ Direct DB connection failed:', dbError.message);
+      return Response.json({
+        error: "Database connection failed",
+        details: dbError.message,
+        code: dbError.code
+      }, { status: 500 });
+    }
+    
     const sql = getDb();
     if (!sql) {
       return Response.json(
